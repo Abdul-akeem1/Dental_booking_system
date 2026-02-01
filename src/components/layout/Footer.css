@@ -1,0 +1,96 @@
+.footer {
+    background-color: var(--color-secondary);
+    color: white;
+    padding-top: 5rem;
+    margin-top: auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-text {
+    color: var(--color-text-light);
+    /* Assuming we update variable or override */
+    color: #94a3b8;
+    /* Manual light gray */
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgb(255 255 255 / 10%);
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.social-link:hover {
+    background-color: var(--color-primary);
+    transform: translateY(-2px);
+}
+
+.footer-col h4 {
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.footer-links li,
+.contact-list li,
+.hours-list li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: #94a3b8;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--color-primary-light);
+    padding-left: 0.25rem;
+}
+
+.contact-list li {
+    display: flex;
+    gap: 0.75rem;
+    color: #94a3b8;
+}
+
+.hours-list li {
+    display: flex;
+    justify-content: space-between;
+    color: #94a3b8;
+    border-bottom: 1px solid rgb(255 255 255 / 10%);
+    padding-bottom: 0.5rem;
+}
+
+.footer-bottom {
+    background-color: rgb(0 0 0 / 20%);
+    padding: 1.5rem 0;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+}

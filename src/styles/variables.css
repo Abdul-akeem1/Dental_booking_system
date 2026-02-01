@@ -1,0 +1,28 @@
+:root {
+    /* Brand Colors */
+    --color-primary: #0e7490;
+    /* Medical Teal */
+    --color-primary-dark: #155e75;
+    --color-primary-light: #22d3ee;
+
+    --color-secondary: #0f172a;
+    /* Dark Navy for text/headings */
+    --color-accent: #f59e0b;
+    /* Amber for CTAs */
+
+    /* Neutrals */
+    --color-bg-white: #ffffff;
+    --color-bg-light: #f8fafc;
+    /* Very light cool gray */
+    --color-text-main: #334155;
+    --color-text-light: #64748b;
+
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+    /* Spacing & Layout */
+    --container-width: 1200px;
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+}
