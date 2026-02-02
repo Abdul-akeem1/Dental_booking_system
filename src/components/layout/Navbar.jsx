@@ -15,7 +15,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
-    navigate('/');
+    navigate("/");
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Navbar = () => {
       <div className="container navbar-container">
         <Link to="/" className="navbar-logo">
           <span className="logo-icon">🦷</span>
-          <span className="logo-text">DentalCare</span>
+          <span className="logo-text">DentalCares</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -78,7 +78,10 @@ const Navbar = () => {
                   <Link to="/appointments" className="dropdown-item">
                     <Calendar size={16} /> My Appointments
                   </Link>
-                  <button onClick={handleLogout} className="dropdown-item logout-item">
+                  <button
+                    onClick={handleLogout}
+                    className="dropdown-item logout-item"
+                  >
                     <LogOut size={16} /> Logout
                   </button>
                 </div>
