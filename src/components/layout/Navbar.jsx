@@ -31,7 +31,7 @@ const Navbar = () => {
       <div className="container navbar-container">
         <Link to="/" className="navbar-logo">
           <span className="logo-icon">🦷</span>
-          <span className="logo-text">DentalCares</span>
+          <span className="logo-text">DentalCare</span>
         </Link>
 
         {/* Desktop Menu */}
