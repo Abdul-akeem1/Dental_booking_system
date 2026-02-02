@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Phone, User } from "lucide-react";
+import { Menu, X, Phone, User, LogOut, Calendar } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setDropdownOpen(false);
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,9 +39,9 @@ const Navbar = () => {
           <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/services" className="nav-link">
+          <a href="/#services" className="nav-link">
             Services
-          </Link>
+          </a>
           <Link to="/about" className="nav-link">
             About Us
           </Link>
@@ -48,6 +59,36 @@ const Navbar = () => {
             <User size={18} className="icon-left" />
             Portal
           </Link>
+          {user ? (
+            <div className="user-dropdown-container">
+              <button
+                className="user-icon-btn"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <div className="user-avatar">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+              </button>
+
+              {dropdownOpen && (
+                <div className="user-dropdown-menu">
+                  <Link to="/profile" className="dropdown-item">
+                    <User size={16} /> My Profile
+                  </Link>
+                  <Link to="/appointments" className="dropdown-item">
+                    <Calendar size={16} /> My Appointments
+                  </Link>
+                  <button onClick={handleLogout} className="dropdown-item logout-item">
+                    <LogOut size={16} /> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login" className="nav-link login-link">
+              Log in
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -62,13 +103,13 @@ const Navbar = () => {
           <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>
             Home
           </Link>
-          <Link
-            to="/services"
+          <a
+            href="/#services"
             className="mobile-link"
             onClick={() => setIsOpen(false)}
           >
             Services
-          </Link>
+          </a>
           <Link
             to="/about"
             className="mobile-link"

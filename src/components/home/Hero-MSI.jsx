@@ -13,7 +13,7 @@ const Hero = () => {
                 </h1>
                 <p className="hero-subtitle">
                     Advanced technology, compassionate care, and a team dedicated to your smile.
-                    Serving the Ratoath community with pride.
+                    Serving the DentalCare community with pride.
                 </p>
                 <div className="hero-buttons">
                     <button className="btn btn-primary hero-btn">
