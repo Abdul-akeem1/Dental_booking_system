@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
@@ -32,7 +33,7 @@ app.use(
     secret: "secret-key", // Change this in production
     resave: false,
     saveUninitialized: true,
-  })
+  }),
 );
 
 // Register

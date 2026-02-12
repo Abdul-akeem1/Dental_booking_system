@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="container footer-grid">
                 <div className="footer-col">
                     <h3 className="footer-logo">
-                        <span className="logo-icon">🦷</span> Ratoath Dental
+                        <span className="logo-icon">🦷</span> DentalCare
                     </h3>
                     <p className="footer-text">
                         Providing exceptional dental care for the whole family. We are committed to your oral health and beautiful smile.
@@ -36,7 +36,7 @@ const Footer = () => {
                     <ul className="contact-list">
                         <li>
                             <MapPin size={18} className="contact-icon" />
-                            <span>Main Street, Ratoath, Co. Meath</span>
+                            <span>Main Street, Letterkenny, Co. Donegal</span>
                         </li>
                         <li>
                             <Phone size={18} className="contact-icon" />
@@ -44,7 +44,7 @@ const Footer = () => {
                         </li>
                         <li>
                             <Mail size={18} className="contact-icon" />
-                            <span>info@ratoathdental.ie</span>
+                            <span>info@dentalcare.ie</span>
                         </li>
                     </ul>
                 </div>
@@ -60,7 +60,7 @@ const Footer = () => {
             </div>
             <div className="footer-bottom">
                 <div className="container">
-                    <p>&copy; {new Date().getFullYear()} Ratoath Dental Excellence. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} DentalCare. All rights reserved.</p>
                 </div>
             </div>
         </footer>
