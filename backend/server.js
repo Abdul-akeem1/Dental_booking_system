@@ -152,6 +152,7 @@ app.post("/api/dentist/register", async (req, res) => {
 
     const newDentist = new Dentist({ name, email, password: hashedPassword, speciality });
     await newDentist.save();
+
     res.status(201).json({ message: "Dentist created", dentistId: newDentist.id });
   } catch (error) {
     console.error("Dentist registration error: ", error);
@@ -189,6 +190,33 @@ app.post("/api/dentist/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+
+// Treatment Creation
+app.post("/api/treatment/create", async (req, res) => {
+  const { amount, cost } = req.body;
+  
+  if (!amount || !cost)
+    return res.status(400).json({ message: "Amount and cost required"})
+  if (typeof amount !== 'number' || typeof cost !== 'number')
+    return res.status(400).json({ message: "Amount and cost must be numbers"})
+
+  try {
+    const newTreatment = new Treatment({ amount, cost });
+    await newTreatment.save();
+    res.status(201).json({
+      message: "Treatment created",
+      treatmentId: newTreatment._id
+    });
+  } catch (error) {
+    console.error("Treatment creation error: ", error);
+    res.status(500).json({message: "Server error"})
+  }
+});
+
+// Appointment Creation
+
+// Get all dentists 
 
 
 // Admin Login Route
