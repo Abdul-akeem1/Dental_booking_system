@@ -1,0 +1,41 @@
+:root {
+    /* Brand Colors */
+    --color-primary: #0e7490;
+    --color-primary-dark: #155e75;
+    --color-primary-light: #22d3ee;
+    --color-secondary: #0f172a;
+    --color-accent: #f59e0b;
+    --color-bg-white: #ffffff;
+    --color-bg-light: #f8fafc;
+    --color-text-main: #334155;
+    --color-text-light: #64748b;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --radius-md: 0.5rem;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--color-text-main);
+    background-color: var(--color-bg-light);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-secondary);
+}
+
+button {
+    font-family: inherit;
+}
