@@ -160,8 +160,6 @@ app.post("/api/dentist/register", async (req, res) => {
     console.error("Dentist registration error: ", error);
     res.status(500).json({ message: "Server error" });
   }
-  
-
 });
 
 // Dentist Login
@@ -248,11 +246,11 @@ app.post("/api/appointment/create", async (req, res) => {
     ]);
 
     if (!dentist)
-      return res.status(404).json({ messaage: "Dentist not found" });
+      return res.status(404).json({ message: "Dentist not found" });
     if (!treatment)
-      return res.status(404).json({ messaage: "Treatment not found" });
+      return res.status(404).json({ message: "Treatment not found" });
     if (!user)
-      return res.status(404).json({ messaage: "User not found" });
+      return res.status(404).json({ message: "User not found" });
 
     //create appointment
     const newAppointment = new Appointment({
@@ -275,8 +273,6 @@ app.post("/api/appointment/create", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-
-
 
 // Get all dentists 
 
