@@ -19,12 +19,12 @@ mongoose
 
 // User Schema
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  phone: { type: String, required: true },
+  name: { type: String, required: false },
+  phone: { type: String, required: false },
   email: { type: String, required: true, unique: true },
-  street: { type: String, required: true },
-  town: { type: String, required: true },
-  county: { type: String, required: true },
+  street: { type: String, required: false },
+  town: { type: String, required: false },
+  county: { type: String, required: false },
   password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
@@ -78,8 +78,10 @@ app.use(
 
 // User Register
 app.post("/api/register", async (req, res) => { 
-  const { name, phone, email, street, town, county, password } = req.body;
-  if ( !name || !phone || !email || !street || !town || !county || !password)
+  // const { name, phone, email, street, town, county, password } = req.body;
+  const { email, password } = req.body;
+  // if ( !name || !phone || !email || !street || !town || !county || !password)
+  if ( !email || !password)
     return res.status(400).json({ message: "All fields required" });
 
   try {
@@ -91,11 +93,11 @@ app.post("/api/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ 
       name,
-      phone,
+      // phone,
       email, 
-      street, 
-      town,
-      county,
+      // street, 
+      // town,
+      // county,
       password: hashedPassword 
     });
     await newUser.save();
@@ -140,7 +142,7 @@ app.post("/api/dentist/register", async (req, res) => {
   const { name, email, password, speciality } = req.body;
 
   if (!name || !email || !password || !speciality)
-    return res.status(400).json({ message: "All fields required" });
+    return res.status(400).json({ message: "All fields required." });
 
   try {
     const existingDentist = await Dentist.findOne({ email });
@@ -215,6 +217,66 @@ app.post("/api/treatment/create", async (req, res) => {
 });
 
 // Appointment Creation
+app.post("/api/appointment/create", async (req, res) => {
+  const { date, time, employeeID, treatmentID, clientID, appointmentComplete } = req.body;
+
+  //Validations
+  //validate fields
+  if (!date || !time || !employeeID || !treatmentID || !clientID) {
+    return res.status(400).json({
+      message: "date, time, employeeID, treatmentID, and clientID are required"
+    });
+  }
+
+  //validate date
+  const parsedDate = new Date(date);
+  if (Number.isNaN(parsedDate.getTime())) {
+    return res.status(400).json({ message: "Invalid date format" });
+  }
+
+  //validate ObjectId format (should be Mongo IDs)
+  if ( !mongoose.Types.ObjectId.isValid(employeeID) || !mongoose.Types.ObjectId.isValid(treatmentID) || !mongoose.Types.ObjectId.isValid(clientID) ) {
+    return res.status(400).json(({ message: "Invalid ID format" }));
+  }
+
+  try {
+    //check linked docs exist
+    const [dentist, treatment, user] = await Promise.all([
+      Dentist.findById(employeeID),
+      Treatment.findById(treatmentID),
+      User.findById(clientID),
+    ]);
+
+    if (!dentist)
+      return res.status(404).json({ messaage: "Dentist not found" });
+    if (!treatment)
+      return res.status(404).json({ messaage: "Treatment not found" });
+    if (!user)
+      return res.status(404).json({ messaage: "User not found" });
+
+    //create appointment
+    const newAppointment = new Appointment({
+      appointmentComplete: Boolean(appointmentComplete ?? false),
+      date: parsedDate,
+      time,
+      employeeID,
+      treatmentID,
+      clientID,
+    });
+
+    await newAppointment.save();
+
+    return res.status(201).json({
+      message: "Appointment created",
+      appointmentId: newAppointment._id,
+    });
+  } catch(error) {
+    console.error("Appointment creation error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 // Get all dentists 
 
