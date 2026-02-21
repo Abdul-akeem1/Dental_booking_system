@@ -1,0 +1,22 @@
+.filter-item {
+    border: 1px solid #eee;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.filter-item:hover {
+    background-color: #5f5fd5 !important;
+    color: white !important;
+    border-color: #5f5fd5 !important;
+}
+
+.filter-item.active {
+    background-color: #E0E7FF;
+    border-color: #E0E7FF;
+    color: #333;
+}
