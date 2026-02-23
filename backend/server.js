@@ -1,3 +1,16 @@
+const User = require("./models/User");
+const Dentist = require("./models/Dentist");
+const Treatment = require("./models/Treatment");
+const Appointment = require("./models/Appointment");
+
+
+
+
+
+
+
+//Currently moving everything into folders
+
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
@@ -18,50 +31,50 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // User Schema
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: false },
-  phone: { type: String, required: false },
-  email: { type: String, required: true, unique: true },
-  street: { type: String, required: false },
-  town: { type: String, required: false },
-  county: { type: String, required: false },
-  password: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+// const userSchema = new mongoose.Schema({
+//   name: { type: String, required: false },
+//   phone: { type: String, required: false },
+//   email: { type: String, required: true, unique: true },
+//   street: { type: String, required: false },
+//   town: { type: String, required: false },
+//   county: { type: String, required: false },
+//   password: { type: String, required: true },
+//   createdAt: { type: Date, default: Date.now },
+// });
 
-const User = mongoose.model("User", userSchema);
+// const User = mongoose.model("User", userSchema);
 
 // Dentist Schema
-const dentistSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  speciality: { type: String, required: true },
-});
+// const dentistSchema = new mongoose.Schema({
+//   name: { type: String, required: true },
+//   email: { type: String, required: true, unique: true },
+//   password: { type: String, required: true },
+//   createdAt: { type: Date, default: Date.now },
+//   speciality: { type: String, required: true },
+// });
 
-const Dentist = mongoose.model("Dentist", dentistSchema);
+// const Dentist = mongoose.model("Dentist", dentistSchema);
 
 // Treatment Schema
-const treatmentSchema = new mongoose.Schema({
-  amount: { type: Number, required: true },
-  dateIssued: { type: Date, default: Date.now },
-  cost: { type: Number, required: true}
-});
+// const treatmentSchema = new mongoose.Schema({
+//   amount: { type: Number, required: true },
+//   dateIssued: { type: Date, default: Date.now },
+//   cost: { type: Number, required: true}
+// });
 
-const Treatment = mongoose.model("Treatment", treatmentSchema);
+// const Treatment = mongoose.model("Treatment", treatmentSchema);
 
 // Appointment Schema
-const appointmentSchema = new mongoose.Schema({
-  appointmentComplete: { type: Boolean, required: true },
-  date: { type: Date, required: true },
-  time: { type: String, required: true },
-  employeeID: { type: mongoose.Schema.Types.ObjectId, ref: "Dentist", required: true },
-  treatmentID: { type: mongoose.Schema.Types.ObjectId, ref: "Treatment", required: true },
-  clientID: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-});
+// const appointmentSchema = new mongoose.Schema({
+//   appointmentComplete: { type: Boolean, required: true },
+//   date: { type: Date, required: true },
+//   time: { type: String, required: true },
+//   employeeID: { type: mongoose.Schema.Types.ObjectId, ref: "Dentist", required: true },
+//   treatmentID: { type: mongoose.Schema.Types.ObjectId, ref: "Treatment", required: true },
+//   clientID: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+// });
 
-const Appointment = mongoose.model("Appointment", appointmentSchema);
+// const Appointment = mongoose.model("Appointment", appointmentSchema);
 
 app.use(cors({
   origin: ["http://localhost:3000", "http://localhost:5173"],
