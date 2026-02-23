@@ -2,6 +2,7 @@ const User = require("./models/User");
 const Dentist = require("./models/Dentist");
 const Treatment = require("./models/Treatment");
 const Appointment = require("./models/Appointment");
+const userRoutes = require("./routes/userRoutes");
 
 
 
@@ -89,66 +90,68 @@ app.use(
   }),
 );
 
-// User Register
-app.post("/api/register", async (req, res) => { 
-  // const { name, phone, email, street, town, county, password } = req.body;
-  const { email, password } = req.body;
-  // if ( !name || !phone || !email || !street || !town || !county || !password)
-  if ( !email || !password)
-    return res.status(400).json({ message: "All fields required" });
+app.use("/api/users", userRoutes);
 
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
-    }
+// // User Register
+// app.post("/api/register", async (req, res) => { 
+//   // const { name, phone, email, street, town, county, password } = req.body;
+//   const { email, password } = req.body;
+//   // if ( !name || !phone || !email || !street || !town || !county || !password)
+//   if ( !email || !password)
+//     return res.status(400).json({ message: "All fields required" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ 
-      // name,
-      // phone,
-      email, 
-      // street, 
-      // town,
-      // county,
-      password: hashedPassword 
-    });
-    await newUser.save();
+//   try {
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "User already exists" });
+//     }
 
-    res.status(201).json({ message: "User created" });
-  } catch (error) {
-    console.error("Register error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const newUser = new User({ 
+//       // name,
+//       // phone,
+//       email, 
+//       // street, 
+//       // town,
+//       // county,
+//       password: hashedPassword 
+//     });
+//     await newUser.save();
 
-// User Login
-app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
+//     res.status(201).json({ message: "User created" });
+//   } catch (error) {
+//     console.error("Register error:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+// // User Login
+// app.post("/api/login", async (req, res) => {
+//   const { email, password } = req.body;
    
-  if (!email || !password)
-    return res.status(400).json({message: "Email and password required" });
+//   if (!email || !password)
+//     return res.status(400).json({message: "Email and password required" });
 
-  try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "User not found" });
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(400).json({ message: "User not found" });
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: "Invalid credentials" });
+//     const match = await bcrypt.compare(password, user.password);
+//     if (!match) return res.status(400).json({ message: "Invalid credentials" });
 
-    req.session.userId = user._id; // Use standard _id from MongoDB
-    // return user data
-    res.json({ 
-      message: "Login successful",
-      userId: user._id,
-      name: user.name,
-      email: user.email
-    });
-  } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+//     req.session.userId = user._id; // Use standard _id from MongoDB
+//     // return user data
+//     res.json({ 
+//       message: "Login successful",
+//       userId: user._id,
+//       name: user.name,
+//       email: user.email
+//     });
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
 
 // Dentist Registration (for now anyone can be a dentist, i'll add security check later so admins can only create dentist accs.)
 app.post("/api/dentist/register", async (req, res) => {

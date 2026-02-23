@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 // 201 create success
@@ -6,6 +7,43 @@ const User = require("../models/User");
 // 400 bad input / invalid id
 // 404 not found
 // 500 server error
+
+
+// --------------------------LOGIN USER------------------------------
+exports.loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password required" });
+    }
+
+    try {
+        const normalisedEmail = email.trim().toLowerCase();
+        const user = await User.findOne({ email: normalisedEmail });
+
+        if (!user) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        req.session.userId = user._id;
+
+        return res.status(200).json({
+            message: "Login successful",
+            userId: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+        });
+    } catch (error) {
+        console.error("Login error:", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
 
 
 // --------------------------CREATE USER------------------------------
@@ -52,7 +90,7 @@ exports.createUser = async (req, res) => {
             user: userResponse,
          });
     } catch (err) {
-        console.error("Error:", error);
+        console.error("Error:", err);
         return res.status(500).json({ message: "Server error" });
     }
 }
@@ -113,7 +151,7 @@ exports.updateUser = async (req, res) => {
 
         const existingUser = await User.findById(id);
         if (!existingUser) {
-            return res.status(400).json({ message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
 
         const allowedFields = ["firstName", "lastName", "phone", "email", "street", "town", "county", "password"];
@@ -138,7 +176,7 @@ exports.updateUser = async (req, res) => {
             updates.password = await bcrypt.hash(updates.password, 10);
         }
 
-        const updatedUser = await User.findById(id, updates, {
+        const updatedUser = await User.findByIdAndUpdate(id, updates, {
             new: true,
             runValidators: true,
         }).select("-password");
