@@ -22,16 +22,16 @@ exports.deleteDentist = async (req, res) => {
         const { id } = req.params
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid user id" });
+            return res.status(400).json({ message: "Invalid dentist id" });
         }
 
-        const deletedDentist = await User.findByIdAndDelete(id);
+        const deletedDentist = await Dentist.findByIdAndDelete(id);
 
-        if (!deletedUser) {
-            return res.status(404).json({ message: "User not found" });
+        if (!deletedDentist) {
+            return res.status(404).json({ message: "Dentist not found" });
         }
 
-        return res.status(200).json({ message: "User deleted successfully" });
+        return res.status(200).json({ message: "Dentist deleted successfully" });
     } catch (err) {
         return res.status(500).json({ message: "Server error" });
     }
