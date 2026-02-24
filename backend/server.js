@@ -4,12 +4,15 @@ const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+// route modules
 const userRoutes = require("./routes/userRoutes");
 const dentistRoutes = require("./routes/dentistRoutes");
 
+// app setup
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// database connection
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/dental_system";
 
 mongoose
@@ -17,6 +20,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
+// global middleware
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:5173"],
@@ -32,6 +36,7 @@ app.use(
   }),
 );
 
+// api route mounting
 app.use("/api/users", userRoutes);
 app.use("/api/dentists", dentistRoutes);
 
@@ -187,10 +192,12 @@ app.post("/api/admin/login", (req, res) => {
   return res.status(401).json({ message: "Invalid credentials" });
 });
 
+// health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ ok: true });
 });
 
+// start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
