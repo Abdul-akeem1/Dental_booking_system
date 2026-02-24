@@ -14,12 +14,14 @@ const LoginIn = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    const API_BASE_URL = 'http://localhost:5000';
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const endpoint = isLogin ? '/api/login' : '/api/register';
+        const endpoint = isLogin ? '/api/users/login' : '/api/users';
 
         try {
-            const response = await fetch(endpoint, {
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,8 +36,13 @@ const LoginIn = () => {
                     setIsLogin(true);
                     setPassword('');
                 } else {
-                    // Login successful
-                    login({ email }); // You might want to pass more user info from backend
+                    login({
+                        role: 'user',
+                        email: data.email || email,
+                        userId: data.userId,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                    });
                     navigate('/');
                 }
             } else {
