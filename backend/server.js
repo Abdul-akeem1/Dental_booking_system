@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routes/userRoutes");
+const dentistRoutes = require("./routes/dentistRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,6 +33,7 @@ app.use(
 );
 
 app.use("/api/users", userRoutes);
+app.use("/api/dentists", dentistRoutes);
 
 // -----------------------------------------------------------------------------
 // commented out (kept for reference incase)
