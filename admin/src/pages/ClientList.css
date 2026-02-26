@@ -1,0 +1,33 @@
+.client-list-page {
+	padding: 8px;
+}
+
+.toolbar {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 10px;
+}
+
+.id-input {
+	min-width: 220px;
+}
+
+.cards-grid {
+	display: grid;
+	gap: 8px;
+}
+
+.client-card {
+	padding: 8px;
+}
+
+.edit-grid {
+	display: grid;
+	gap: 6px;
+}
+
+.row-actions {
+	display: flex;
+	gap: 6px;
+}
