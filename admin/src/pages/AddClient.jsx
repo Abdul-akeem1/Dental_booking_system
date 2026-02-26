@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
-import axios from "axios";
+import axios from "axios"; //used to send data from frontend to backend
 import { toast } from "react-toastify";
 import "./AddClient.css";
 
 const API_URL = "http://localhost:5000/api/users";
 
 const AddClient = () => {
-  // this states store what user type in each input box
+  // these states store what user type in each input box
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -17,7 +17,8 @@ const AddClient = () => {
   const [county, setCounty] = useState("");
   const [password, setPassword] = useState("");
 
-  // check if every field has some value(after remove empty spaces)
+  // checkif every field has some value(after remove empty spaces)
+  // we want the field to be empty and has no spaces (since js counts space as string)
   const allFieldsFilled =
     firstName.trim() !== "" &&
     lastName.trim() !== "" &&
@@ -40,9 +41,9 @@ const AddClient = () => {
     setPassword("");
   };
 
-  // this runs when user clicks the create client button
+  //this runs when user clicks the create client button
   const handleSubmit = async (e) => {
-    // stop page reload on form submit.
+    // stop page reload on form submit
     e.preventDefault();
 
     // extra safety check before sending data to backend
@@ -51,7 +52,7 @@ const AddClient = () => {
       return;
     }
 
-    // build the object that backend expects
+    //build the object that backend expects
     const payload = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
@@ -71,7 +72,7 @@ const AddClient = () => {
       clearForm();
     } catch (error) {
       // show backend message if it exist, if not show default message
-      toast.error(error.response?.data?.message || "Failed to create client");
+      toast.error("Failed to create client");
       console.error(error.message);
     }
   };
