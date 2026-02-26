@@ -1,7 +1,10 @@
 import React from "react";
 import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ setToken }) => {
+    const navigate = useNavigate();
+
     const handleLogout = () => {
         localStorage.removeItem("adminToken");
         setToken("");
@@ -24,7 +27,7 @@ const Navbar = ({ setToken }) => {
             zIndex: 1000,
             marginLeft: "250px" // Offset for sidebar
         }}>
-            <div onClick={()=>Navigate('/dashboard')} style={{ fontWeight: 700, fontFamily: "Inter, system-ui, sans-serif", fontSize: "1.5rem", color: "#155e75", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <div onClick={() => navigate('/')} style={{ fontWeight: 700, fontFamily: "Inter, system-ui, sans-serif", fontSize: "1.5rem", color: "#155e75", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <span className="logo-icon" style={{ fontSize: "1.8rem" }}>🦷</span>
                 <span className="logo-text">DentalCare</span>
             </div>

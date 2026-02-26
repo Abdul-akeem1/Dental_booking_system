@@ -44,11 +44,11 @@ const Sidebar = () => {
                 <NavLink to="/appointments" style={linkStyle}>
                     <Calendar size={20} /> Appointments
                 </NavLink>
-                <NavLink to="/appointments" style={linkStyle}>
-                    <Calendar size={20} /> Add Client
+                <NavLink to="/add-client" style={linkStyle}>
+                    <UserPlus size={20} /> Add Client
                 </NavLink>
-                <NavLink to="/appointments" style={linkStyle}>
-                    <Calendar size={20} /> Client List
+                <NavLink to="/clients" style={linkStyle}>
+                    <Users size={20} /> Client List
                 </NavLink>
                 <NavLink to="/add-dentist" style={linkStyle}>
                     <UserPlus size={20} /> Add Dentist

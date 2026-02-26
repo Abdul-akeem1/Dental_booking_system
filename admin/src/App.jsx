@@ -11,6 +11,7 @@ import AllAppointments from "./pages/AllAppointments";
 import AddDentist from "./pages/AddDentist";
 import DentistList from "./pages/DentistList";
 import AddClient from "./pages/AddClient";
+import ClientList from "./pages/ClientList";
 
 
 
@@ -37,6 +38,8 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/appointments" element={<AllAppointments />} />
+                <Route path="/add-client" element={<AddClient />} />
+                <Route path="/clients" element={<ClientList />} />
                 <Route path="/add-dentist" element={<AddDentist />} />
                 <Route path="/dentists" element={<DentistList />} />
                 {/* Fallback */}
