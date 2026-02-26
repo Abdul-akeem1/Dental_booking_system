@@ -1,11 +1,12 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import { useState } from "react";
 
 const AddClient = () => {
     const [firstName, setFirstName] = useState("");
-    const [lastName, setlastName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
-    const [email, setemail] = useState("");
+    const [email, setEmail] = useState("");
     const [street, setStreet] = useState("");
     const [town, setTown] = useState("");
     const [county, setCounty] = useState("");
