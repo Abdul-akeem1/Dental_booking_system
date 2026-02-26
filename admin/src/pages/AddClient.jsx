@@ -1,6 +1,7 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { useState } from "react";
+import axios from "axios";
 
 const AddClient = () => {
     const [firstName, setFirstName] = useState("");
@@ -12,8 +13,39 @@ const AddClient = () => {
     const [county, setCounty] = useState("");
     const [password, setPassword] = useState("");
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            firstName,
+            lastName,
+            phone, 
+            email,
+            street,
+            town,
+            county,
+            password,
+        };
+
+        try {
+            const { data } = await axios.post("http://localhost:5000/api/users", payload);
+            // clear form after success
+            setFirstName("");
+            setLastName("");
+            setPhone("");
+            setEmail("");
+            setStreet("");
+            setTown("");
+            setCounty("");
+            setPassword("");
+            console.log(data); 
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <h2>Add Client</h2>
           </div>
@@ -108,10 +140,12 @@ const AddClient = () => {
                     onChange={(e) => setPassword(e.target.value)} 
                 />
               </div>
+
+              <div>
+                <button type="submit">Create Client</button>
+              </div>
               
             </div>
-    
-    
           </div>
         </form>
       );
