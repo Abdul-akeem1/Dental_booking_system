@@ -10,6 +10,9 @@ import Dashboard from "./pages/Dashboard";
 import AllAppointments from "./pages/AllAppointments";
 import AddDentist from "./pages/AddDentist";
 import DentistList from "./pages/DentistList";
+import AddClient from "./pages/AddClient";
+
+
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("adminToken") || "");
