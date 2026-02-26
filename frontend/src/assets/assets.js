@@ -4,7 +4,7 @@ import group_profiles from './group_profiles.png'
 import profile_pic from './profile_pic.png'
 import contact_image from './contact_image.png'
 import about_image from './about_image.png'
-import logo from './logo.svg'
+//import logo from './logo.svg'
 import dropdown_icon from './dropdown_icon.svg'
 import menu_icon from './menu_icon.svg'
 import cross_icon from './cross_icon.png'
@@ -15,21 +15,21 @@ import info_icon from './info_icon.svg'
 import upload_icon from './upload_icon.png'
 import stripe_logo from './stripe_logo.png'
 import razorpay_logo from './razorpay_logo.png'
-import doc1 from './doc1.png'
-import doc2 from './doc2.png'
-import doc3 from './doc3.png'
-import doc4 from './doc4.png'
-import doc5 from './doc5.png'
-import doc6 from './doc6.png'
-import doc7 from './doc7.png'
-import doc8 from './doc8.png'
-import doc9 from './doc9.png'
-import doc10 from './doc10.png'
-import doc11 from './doc11.png'
-import doc12 from './doc12.png'
-import doc13 from './doc13.png'
-import doc14 from './doc14.png'
-import doc15 from './doc15.png'
+import den1 from './den1.png'
+import den2 from './den2.png'
+import den3 from './den3.png'
+import den4 from './den4.png'
+import den5 from './den5.png'
+import den6 from './den6.png'
+import den7 from './den7.png'
+import den8 from './den8.png'
+import den9 from './den9.png'
+import den10 from './den10.png'
+import den11 from './den11.png'
+import den12 from './den12.png'
+import den13 from './den13.png'
+import den14 from './den14.png'
+import den15 from './den15.png'
 import Dermatologist from './Dermatologist.svg'
 import Gastroenterologist from './Gastroenterologist.svg'
 import General_physician from './General_physician.svg'
@@ -42,7 +42,7 @@ export const assets = {
     appointment_img,
     header_img,
     group_profiles,
-    logo,
+    //logo,
     chats_icon,
     verified_icon,
     info_icon,
@@ -60,37 +60,37 @@ export const assets = {
 
 export const specialityData = [
     {
-        speciality: 'General physician',
+        speciality: 'General Dentist',
         image: General_physician
     },
     {
-        speciality: 'Gynecologist',
+        speciality: 'Cosmetic Dentist',
         image: Gynecologist
     },
     {
-        speciality: 'Dermatologist',
+        speciality: 'Emergency Care',
         image: Dermatologist
     },
     {
-        speciality: 'Pediatricians',
+        speciality: 'Orthodontics',
         image: Pediatricians
     },
     {
-        speciality: 'Neurologist',
+        speciality: 'Periodontist',
         image: Neurologist
     },
     {
-        speciality: 'Gastroenterologist',
+        speciality: 'Prosthodontist',
         image: Gastroenterologist
     },
 ]
 
-export const doctors = [
+export const dentists = [
     {
-        _id: 'doc1',
+        _id: 'den1',
         name: 'Dr. Richard James',
-        image: doc1,
-        speciality: 'General physician',
+        image: den1,
+        speciality: 'General Dentist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -101,10 +101,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc2',
+        _id: 'den2',
         name: 'Dr. Emily Larson',
-        image: doc2,
-        speciality: 'Gynecologist',
+        image: den2,
+        speciality: 'Cosmetic Dentist',
         degree: 'MBBS',
         experience: '3 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -115,10 +115,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc3',
+        _id: 'den3',
         name: 'Dr. Sarah Patel',
-        image: doc3,
-        speciality: 'Dermatologist',
+        image: den3,
+        speciality: 'Emergency Care',
         degree: 'MBBS',
         experience: '1 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -129,10 +129,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc4',
+        _id: 'den4',
         name: 'Dr. Christopher Lee',
-        image: doc4,
-        speciality: 'Pediatricians',
+        image: den4,
+        speciality: 'Orthodontics',
         degree: 'MBBS',
         experience: '2 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -143,10 +143,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc5',
+        _id: 'den5',
         name: 'Dr. Jennifer Garcia',
-        image: doc5,
-        speciality: 'Neurologist',
+        image: den5,
+        speciality: 'Periodontist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -157,10 +157,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc6',
+        _id: 'den6',
         name: 'Dr. Andrew Williams',
-        image: doc6,
-        speciality: 'Neurologist',
+        image: den6,
+        speciality: 'Prosthodontist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -171,10 +171,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc7',
+        _id: 'den7',
         name: 'Dr. Christopher Davis',
-        image: doc7,
-        speciality: 'General physician',
+        image: den7,
+        speciality: 'General Dentist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -185,10 +185,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc8',
+        _id: 'den8',
         name: 'Dr. Timothy White',
-        image: doc8,
-        speciality: 'Gynecologist',
+        image: den8,
+        speciality: 'Cosmetic Dentist',
         degree: 'MBBS',
         experience: '3 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -199,10 +199,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc9',
+        _id: 'den9',
         name: 'Dr. Ava Mitchell',
-        image: doc9,
-        speciality: 'Dermatologist',
+        image: den9,
+        speciality: 'Emergency Care',
         degree: 'MBBS',
         experience: '1 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -213,13 +213,13 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc10',
+        _id: 'den10',
         name: 'Dr. Jeffrey King',
-        image: doc10,
-        speciality: 'Pediatricians',
+        image: den10,
+        speciality: 'Orthodontics',
         degree: 'MBBS',
         experience: '2 Years',
-        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and treatment strategies. ',
         fees: 40,
         address: {
             line1: '47th Cross, Richmond',
@@ -227,10 +227,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc11',
+        _id: 'den11',
         name: 'Dr. Zoe Kelly',
-        image: doc11,
-        speciality: 'Neurologist',
+        image: den11,
+        speciality: 'Periodontist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -241,10 +241,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc12',
+        _id: 'den12',
         name: 'Dr. Patrick Harris',
-        image: doc12,
-        speciality: 'Neurologist',
+        image: den12,
+        speciality: 'Prosthodontist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -255,10 +255,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc13',
+        _id: 'den13',
         name: 'Dr. Chloe Evans',
-        image: doc13,
-        speciality: 'General physician',
+        image: den13,
+        speciality: 'General Dentist',
         degree: 'MBBS',
         experience: '4 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -269,10 +269,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc14',
+        _id: 'den14',
         name: 'Dr. Ryan Martinez',
-        image: doc14,
-        speciality: 'Gynecologist',
+        image: den14,
+        speciality: 'Cosmetic Dentist',
         degree: 'MBBS',
         experience: '3 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -283,10 +283,10 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc15',
+        _id: 'den15',
         name: 'Dr. Amelia Hill',
-        image: doc15,
-        speciality: 'Dermatologist',
+        image: den15,
+        speciality: 'Emergency Care',
         degree: 'MBBS',
         experience: '1 Years',
         about: 'Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',

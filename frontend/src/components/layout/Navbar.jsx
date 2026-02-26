@@ -42,6 +42,9 @@ const Navbar = () => {
           <a href="/#services" className="nav-link">
             Services
           </a>
+          <a href="/dentists" className="nav-link">
+            Dentists
+          </a>
           <Link to="/about" className="nav-link">
             About Us
           </Link>
@@ -113,6 +116,13 @@ const Navbar = () => {
           >
             Services
           </a>
+          <Link
+            to="/dentists"
+            className="mobile-link"
+            onClick={() => setIsOpen(false)}
+          >
+            Dentists
+          </Link>
           <Link
             to="/about"
             className="mobile-link"

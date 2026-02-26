@@ -2,15 +2,15 @@ import React from 'react';
 import { Smile, Activity, Star, Clock, Brain, User } from 'lucide-react';
 import './Services.css';
 
-const servicesData = [
+export const servicesData = [
     {
         icon: <Smile size={40} />,
-        title: 'General Dentistry',
+        title: 'General Dentist',
         description: 'Routine check-ups, cleanings, and preventive care to keep your smile healthy and bright.'
     },
     {
         icon: <Star size={40} />,
-        title: 'Cosmetic Dentistry',
+        title: 'Cosmetic Dentist',
         description: 'Transform your smile with veneers, whitening, and bonding treatments tailored to you.'
     },
     {
