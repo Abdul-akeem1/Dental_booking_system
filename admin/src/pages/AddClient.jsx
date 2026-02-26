@@ -7,7 +7,7 @@ import "./AddClient.css";
 const API_URL = "http://localhost:5000/api/users";
 
 const AddClient = () => {
-  // these states store what user type in each input box
+  //these states store what user type in each input box
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -17,8 +17,8 @@ const AddClient = () => {
   const [county, setCounty] = useState("");
   const [password, setPassword] = useState("");
 
-  // checkif every field has some value(after remove empty spaces)
-  // we want the field to be empty and has no spaces (since js counts space as string)
+  //checkif every field has some value(after remove empty spaces)
+  //we want the field to be empty and has no spaces (since js counts space as string)
   const allFieldsFilled =
     firstName.trim() !== "" &&
     lastName.trim() !== "" &&
@@ -29,7 +29,7 @@ const AddClient = () => {
     county.trim() !== "" &&
     password.trim() !== "";
 
-  // reset all inputs after succesful submit
+  //reset all inputs after succesful submit
   const clearForm = () => {
     setFirstName("");
     setLastName("");
@@ -43,10 +43,10 @@ const AddClient = () => {
 
   //this runs when user clicks the create client button
   const handleSubmit = async (e) => {
-    // stop page reload on form submit
+    //stop page reload on form submit
     e.preventDefault();
 
-    // extra safety check before sending data to backend
+    //extra safety check before sending data to backend
     if (!allFieldsFilled) {
       toast.error("Please fill in all fields before creating a client.");
       return;
@@ -65,13 +65,13 @@ const AddClient = () => {
     };
 
     try {
-      // send new client data to backend api
+      //send new client data to backend api
       const { data } = await axios.post(API_URL, payload);
       console.log(data);
       toast.success("Client created successfully");
       clearForm();
     } catch (error) {
-      // show backend message if it exist, if not show default message
+      //show backend message if it exist, if not show default message
       toast.error("Failed to create client");
       console.error(error.message);
     }
@@ -95,7 +95,7 @@ const AddClient = () => {
 
       <div className="form-content">
         <div>
-          {/* row 1: first name and last name */}
+          {/*  .row 1: first name and last name */}
           <div className="container">
             <div className="input">
               <p>First Name</p>

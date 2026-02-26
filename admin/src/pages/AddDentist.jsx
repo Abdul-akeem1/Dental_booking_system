@@ -1,16 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import { assets } from "../assets/assets";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const API_URL = "http://localhost:5000/api/dentists";
 
 const AddDentist = () => {
+  //states for dentist form inputs
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [experience, setExperience] = useState("");
+  const [speciality, setSpeciality] = useState("General");
+
+  //check if all required fields are filled
+  const allFieldsFilled =
+    firstName.trim() !== "" &&
+    lastName.trim() !== "" &&
+    email.trim() !== "" &&
+    password.trim() !== "" &&
+    experience.trim() !== "" &&
+    speciality.trim() !== "";
+
+  //reset all fields after success
+  const clearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setExperience("");
+    setSpeciality("General");
+  };
+
+  const handleSubmit = async (e) => {
+    //stop page reload on form submit
+    e.preventDefault();
+
+    if (!allFieldsFilled) {
+      toast.error("please fill in all fields before creating a dentist");
+      return;
+    }
+
+    //object that backend expects
+    const payload = {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
+      password: password.trim(),
+      experience: experience.trim(),
+      speciality: speciality.trim(),
+    };
+
+    try {
+      //send new dentist data to backend api
+      const { data } = await axios.post(API_URL, payload);
+      console.log(data);
+      toast.success("dentist created successfully");
+      clearForm();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "failed to create dentist");
+      console.error(error.message);
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit} className="add-client-form">
       <div>
         <h2>Add Dentist</h2>
       </div>
       <div>
-        <lablel htmlFor="">
+        <label htmlFor="den-img">
           <img src={assets.upload_area} alt="" />
-        </lablel>
+        </label>
         <input type="file" id="den-img" />
         <p>
           Upload dentist <br /> picture
@@ -20,23 +82,57 @@ const AddDentist = () => {
       <div>
         <div>
           <div>
-            <p>Dentist name</p>
-            <input type="text" placeholder="Name" required />
+            <p>First Name</p>
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
           </div>
 
           <div>
-            <p>Dentist email</p>
-            <input type="email" placeholder="Email" required />
+            <p>Last Name</p>
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
           </div>
 
           <div>
-            <p>Dentist password</p>
-            <input type="password" placeholder="Password" required />
+            <p>Email</p>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <p>Password</p>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
 
           <div>
             <p>Experience</p>
-            <select name="" id="">
+            <select
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select Experience</option>
               <option value="1 Year">1 Year</option>
               <option value="2 Year">2 Year</option>
               <option value="3 Year">3 Year</option>
@@ -51,8 +147,18 @@ const AddDentist = () => {
           </div>
 
           <div>
-            <p>Fees</p>
-            <input type="fees" placeholder="Your Fees" required />
+            <p>Speciality</p>
+            <input
+              type="text"
+              placeholder="Speciality"
+              value={speciality}
+              onChange={(e) => setSpeciality(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <button type="submit" disabled={!allFieldsFilled}>Create Dentist</button>
           </div>
           
         </div>
