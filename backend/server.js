@@ -4,6 +4,7 @@ const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+
 // route modules
 const userRoutes = require("./routes/userRoutes");
 const dentistRoutes = require("./routes/dentistRoutes");
@@ -23,7 +24,7 @@ mongoose
 // global middleware
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"],
+    origin: ["http://localhost:3000", "http://localhost:5174", "http://localhost:5173"],
     credentials: true,
   }),
 );
@@ -39,6 +40,7 @@ app.use(
 // api route mounting
 app.use("/api/users", userRoutes);
 app.use("/api/dentists", dentistRoutes);
+
 
 // -----------------------------------------------------------------------------
 // commented out (kept for reference incase)
