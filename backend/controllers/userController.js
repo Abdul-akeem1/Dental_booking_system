@@ -51,11 +51,11 @@ exports.loginUser = async (req, res) => {
 // hash password, create user, and return user without password 
 exports.createUser = async (req, res) => {
     try {
-        const { firstName, lastName, phone, email, street, town, county, password } = req.body;
+        const { firstName, lastName, DOB, phone, email, street, town, county, country, Eircode, password } = req.body;
 
         // 1) required fields
         if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" });          
+            return res.status(400).json({ message: "Email and password are required" });
         }
 
         const normalisedEmail = email.trim().toLowerCase();
@@ -73,11 +73,14 @@ exports.createUser = async (req, res) => {
         const user = await User.create({
             firstName,
             lastName,
+            DOB,
             phone,
             email: normalisedEmail,
             street,
             town,
             county,
+            country,
+            Eircode,
             password: hashedPassword,
         });
 
@@ -85,10 +88,10 @@ exports.createUser = async (req, res) => {
         const userResponse = user.toObject();
         delete userResponse.password;
 
-        return res.status(201).json({ 
+        return res.status(201).json({
             message: "User created successfully",
             user: userResponse,
-         });
+        });
     } catch (err) {
         console.error("Error:", err);
         return res.status(500).json({ message: "Server error" });
@@ -101,9 +104,9 @@ exports.createUser = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find({})
-        .select("-password")
-        .sort({ createdAt: -1 });
-        
+            .select("-password")
+            .sort({ createdAt: -1 });
+
         return res.status(200).json({
             count: users.length,
             users,
@@ -154,12 +157,12 @@ exports.updateUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const allowedFields = ["firstName", "lastName", "phone", "email", "street", "town", "county", "password"];
+        const allowedFields = ["firstName", "lastName", "DOB", "phone", "email", "street", "town", "county", "country", "Eircode", "password"];
         const updates = {};
 
         for (const key of allowedFields) {
             if (req.body[key] !== undefined) {
-                updates[key] = req.body[key]; 
+                updates[key] = req.body[key];
             }
         }
 
@@ -197,7 +200,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         const { id } = req.params
-        
+
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Invalid user id" });
         }
