@@ -44,17 +44,14 @@ const Sidebar = () => {
                 <NavLink to="/appointments" style={linkStyle}>
                     <Calendar size={20} /> Appointments
                 </NavLink>
-                <NavLink to="/add-client" style={linkStyle}>
-                    <UserPlus size={20} /> Add Client
-                </NavLink>
-                <NavLink to="/clients" style={linkStyle}>
-                    <Users size={20} /> Client List
-                </NavLink>
-                <NavLink to="/add-dentist" style={linkStyle}>
-                    <UserPlus size={20} /> Add Dentist
+                <NavLink to="/patients" style={linkStyle}>
+                    <Users size={20} /> Patients
                 </NavLink>
                 <NavLink to="/dentists" style={linkStyle}>
-                    <Users size={20} /> Dentist List
+                    <UserPlus size={20} /> Dentists
+                </NavLink>
+                <NavLink to="/treatments" style={linkStyle}>
+                    <LayoutDashboard size={20} /> Treatments
                 </NavLink>
             </nav>
         </div>

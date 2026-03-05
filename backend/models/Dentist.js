@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const dentistSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  DOB: { type: Date },
+  phone: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   speciality: { type: String, required: true },

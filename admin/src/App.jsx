@@ -7,11 +7,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Dashboard from "./pages/Dashboard";
-import AllAppointments from "./pages/AllAppointments";
-import AddDentist from "./pages/AddDentist";
-import DentistList from "./pages/DentistList";
-import AddClient from "./pages/AddClient";
-import ClientList from "./pages/ClientList";
+import Appointments from "./pages/Appointments";
+import Patients from "./pages/Patients";
+import Dentists from "./pages/Dentists";
+import Treatments from "./pages/Treatments";
 
 
 
@@ -37,11 +36,10 @@ const App = () => {
             <div style={{ marginLeft: "250px", marginTop: "60px", padding: "2rem" }}>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
-                <Route path="/appointments" element={<AllAppointments />} />
-                <Route path="/add-client" element={<AddClient />} />
-                <Route path="/clients" element={<ClientList />} />
-                <Route path="/add-dentist" element={<AddDentist />} />
-                <Route path="/dentists" element={<DentistList />} />
+                <Route path="/appointments" element={<Appointments />} />
+                <Route path="/patients" element={<Patients />} />
+                <Route path="/dentists" element={<Dentists />} />
+                <Route path="/treatments" element={<Treatments />} />
                 {/* Fallback */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>

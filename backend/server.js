@@ -8,6 +8,8 @@ const mongoose = require("mongoose");
 // route modules
 const userRoutes = require("./routes/userRoutes");
 const dentistRoutes = require("./routes/dentistRoutes");
+const treatmentRoutes = require("./routes/treatmentRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
 
 // app setup
 const app = express();
@@ -40,6 +42,8 @@ app.use(
 // api route mounting
 app.use("/api/users", userRoutes);
 app.use("/api/dentists", dentistRoutes);
+app.use("/api/treatments", treatmentRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 
 // -----------------------------------------------------------------------------
