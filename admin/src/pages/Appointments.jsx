@@ -138,6 +138,14 @@ const Appointments = () => {
         select: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }
     };
 
+    const timeSlots = [
+            "09:00","09:30","10:00","10:30","11:00","11:30",
+            "12:00","12:30","14:00","14:30","15:00","15:30",
+            "16:00","16:30"
+    ];
+
+    const today = new Date().toISOString().split("T")[0]; //for min in html (so it disables days before today)
+
     return (
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Appointments Management</h2>
@@ -216,12 +224,31 @@ const Appointments = () => {
 
                         <div style={styles.inputGroup}>
                             <label>Date</label>
-                            <input style={styles.input} type="date" required name="date" value={formData.date} onChange={handleInputChange} />
+                            <input 
+                                style={styles.input} 
+                                type="date" 
+                                min={today}
+                                required 
+                                name="date" 
+                                value={formData.date} 
+                                onChange={handleInputChange} 
+                            />
                         </div>
 
                         <div style={styles.inputGroup}>
                             <label>Time</label>
-                            <input style={styles.input} type="time" required name="time" value={formData.time} onChange={handleInputChange} />
+                            {/* <input style={styles.input} type="time" required name="time" value={formData.time} onChange={handleInputChange} /> */}
+                            <select
+                                name="time"
+                                value={formData.time}
+                                onChange={handleInputChange}
+                                required
+                                >
+                                <option value="">Select Time</option>
+                                {timeSlots.map(slot => (
+                                    <option key={slot} value={slot}>{slot}</option>
+                                ))}
+                            </select>
                         </div>
 
                     </div>
