@@ -4,12 +4,22 @@ const Dentist = require("../models/Dentist");
 const Treatment = require("../models/Treatment");
 const User = require("../models/User");
 
+
+// ------------------------------CREATE APPOINTMENT---------------------------------
 exports.createAppointment = async (req, res) => {
     try {
         const { date, time, dentist, treatment, patient, appointmentComplete } = req.body;
 
         if (!date || !time || !dentist || !treatment || !patient) {
             return res.status(400).json({ message: "Missing required fields" });
+        }
+
+        //only allow dates after today
+        const appointmentDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (appointmentDate < today) {
+            return res.status(400).json({ message: "Appointment date must be today or in the future" });
         }
 
         const appointment = await Appointment.create({
@@ -22,6 +32,8 @@ exports.createAppointment = async (req, res) => {
     }
 };
 
+
+// ------------------------------GET ALL APPOINTMENTS---------------------------------
 exports.getAllAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find({})
@@ -34,6 +46,7 @@ exports.getAllAppointments = async (req, res) => {
     }
 };
 
+// ------------------------------GET APPOINTMENTS BY ID---------------------------------
 exports.getAppointmentById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -49,6 +62,7 @@ exports.getAppointmentById = async (req, res) => {
     }
 };
 
+// ------------------------------UPDATE APPOINTMENT--------------------------------
 exports.updateAppointment = async (req, res) => {
     try {
         const { id } = req.params;
@@ -72,6 +86,7 @@ exports.updateAppointment = async (req, res) => {
     }
 };
 
+// ------------------------------DELETE APPOINTMENT---------------------------------
 exports.deleteAppointment = async (req, res) => {
     try {
         const { id } = req.params;
