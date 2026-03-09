@@ -46,7 +46,10 @@ exports.createDentist = async (req, res) => {
             return res.status(400).json({ message: "Dentist must be at least 18 years old." });
         }
     
-
+        if (age > 120) {
+            return res.status(400).json({ message: "Invalid date of birth" });
+        }
+        
         const existingDentist = await Dentist.findOne({ email });
         if (existingDentist) {
             return res.status(400).json({ message: "Dentist email already exists" });
