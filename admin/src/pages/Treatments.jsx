@@ -88,6 +88,16 @@ const Treatments = () => {
                 lengthMins: Number(formData.lengthMins)
             };
 
+            //prevent negative values
+            if (payload.price < 0) {
+                return toast.error("Price cannot be negative");
+            }
+
+            if (payload.lengthMins < 0) {
+                return toast.error("Length cannot be negative");
+            }
+
+
             if (formMode === "add") {
                 await axios.post(API_URL, payload);
                 toast.success("Treatment added successfully");
