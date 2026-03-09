@@ -49,12 +49,17 @@ exports.createDentist = async (req, res) => {
         if (age > 120) {
             return res.status(400).json({ message: "Invalid date of birth" });
         }
-        
+
         const existingDentist = await Dentist.findOne({ email });
         if (existingDentist) {
             return res.status(400).json({ message: "Dentist email already exists" });
         }
 
+        if (dobDate > today) {
+            return res.status(400).json({ message: "DOB cannot be in the future." });
+        }
+
+        //password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const dentist = await Dentist.create({
