@@ -22,6 +22,12 @@ exports.createAppointment = async (req, res) => {
             return res.status(400).json({ message: "Appointment date must be today or in the future" });
         }
 
+        //prevent double booking
+        const existingAppointment = await Appointment.findOne({ dentist, date, time });
+        if (existingAppointment) {
+            return res.status(400).json({ message: "This time slot is already booked"});
+        }
+
         const appointment = await Appointment.create({
             date, time, dentist, treatment, patient, appointmentComplete: Boolean(appointmentComplete)
         });
@@ -83,8 +89,24 @@ exports.updateAppointment = async (req, res) => {
                 return res.status(400).json({ message: "Appointment date must be today or in the future" });
             }
         }
-            
+       
+        //prevent double booking for the same dentist at the same date and time
+        if (updates.date || updates.time || updates.dentist) {
+            const existingAppointment = await Appointment.findOne({
+                dentist: updates.dentist || updated.dentist,
+                date: updates.date || updated.date,
+                time: updates.time || updated.time,
+                _id: { $ne: id } 
+            });
 
+            if (existingAppointment) {
+                return res.status(400).json({ message: "This time slot is already booked"})
+            }
+        }
+
+
+
+        //update appointment
         const updated = await Appointment.findByIdAndUpdate(id, updates, { new: true })
             .populate("dentist", "firstName lastName")
             .populate("treatment", "type price")
