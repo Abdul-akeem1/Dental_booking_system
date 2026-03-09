@@ -69,6 +69,62 @@ exports.createUser = async (req, res) => {
         // 3) hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+
+        //Validations
+        //validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(normalisedEmail)) {
+            return res.status(400).json({ message: "Invalid email format" });
+        }
+
+        //validate phone number (Irish format)
+        const phoneRegex = /^08[0-9]{8}$/;
+        if(phone && !phoneRegex.test(phone)) {
+            return res.status(400).json({ message: "Invalid phone number" });
+        }
+
+        //validate DOB (must be atleast 18)
+        const dobDate = new Date(DOB);
+        const today = new Date();
+
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const monthDiff = today.getMonth() - dobDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+            age--;
+        }
+
+        if (age > 120) {
+            return res.status(400).json({ message: "Invalid date of birth" });
+        }
+
+        if (dobDate > today) {
+            return res.status(400).json({ message: "DOB cannot be in the future." });
+        }
+
+        //validate address fields
+        const textRegex = /^[A-Za-z\s'-]{2,50}$/;
+
+        if (town && !textRegex.test(town)) {
+            return res.status(400).json({ message: "Invalid town name" });
+        }
+
+        if (county && !textRegex.test(county)) {
+            return res.status(400).json({ message: "Invalid county name" });
+        }
+
+        if (country && !textRegex.test(country)) {
+            return res.status(400).json({ message: "Invalid country name" });
+        }
+
+        //validate eircode
+        const eircodeRegex = /^[A-Za-z0-9]{3}\s?[A-Za-z0-9]{4}$/;
+
+        if (!eircodeRegex.test(Eircode)) {
+            return res.status(400).json({ message: "Invalid Eircode format" });
+        }
+
+
         // 4) create user (only allowed fields)
         const user = await User.create({
             firstName,
