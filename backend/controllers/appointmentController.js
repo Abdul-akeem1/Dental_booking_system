@@ -74,6 +74,17 @@ exports.updateAppointment = async (req, res) => {
             if (req.body[key] !== undefined) updates[key] = req.body[key];
         }
 
+        //only allow dates after today
+        if (updates.date) {
+            const appointmentDate = new Date(updates.date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (appointmentDate < today) {
+                return res.status(400).json({ message: "Appointment date must be today or in the future" });
+            }
+        }
+            
+
         const updated = await Appointment.findByIdAndUpdate(id, updates, { new: true })
             .populate("dentist", "firstName lastName")
             .populate("treatment", "type price")
