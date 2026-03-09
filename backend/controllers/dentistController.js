@@ -17,6 +17,36 @@ exports.createDentist = async (req, res) => {
             return res.status(400).json({ message: "Missing required fields" });
         }
 
+
+        //Validations
+        //validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Invalid email format" });
+        }
+
+        //validate phone number (Irish format)
+        const phoneRegex = /^08[0-9]{8}$/;
+        if(phone && !phoneRegex.test(phone)) {
+            return res.status(400).json({ message: "Invalid phone number" });
+        }
+
+        //validate DOB (must be atleast 18)
+        const dobDate = new Date(DOB);
+        const today = new Date();
+
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const monthDiff = today.getMonth() - dobDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            return res.status(400).json({ message: "Dentist must be at least 18 years old." });
+        }
+    
+
         const existingDentist = await Dentist.findOne({ email });
         if (existingDentist) {
             return res.status(400).json({ message: "Dentist email already exists" });
@@ -63,6 +93,41 @@ exports.updateDentist = async (req, res) => {
             }
         }
 
+        //Validations
+        //validate email format
+        if (updates.email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailRegex.test(updates.email)) {
+                return res.status(400).json({ message: "Invalid email format" });
+            }
+        }
+
+        //validate phone number (Irish format)
+        if (updates.phone) {
+            const phoneRegex = /^08[0-9]{8}$/;
+            if(!phoneRegex.test(updates.phone)) {
+                return res.status(400).json({ message: "Invalid phone number" });
+            }  
+        }
+
+        //validate DOB (not in future, must be atleast 18)
+        if (updates.DOB) {
+            //validate DOB (must be atleast 18)
+            const dobDate = new Date(updates.DOB);
+            const today = new Date();
+
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const monthDiff = today.getMonth() - dobDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                return res.status(400).json({ message: "Dentist must be at least 18 years old." });
+            }
+        }
+
         if (updates.password) {
             updates.password = await bcrypt.hash(updates.password, 10);
         }
@@ -83,6 +148,8 @@ exports.updateDentist = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ message: "Server error" });
     }
+
+
 };// -------------------------GET ALL DENTIST--------------------------
 exports.getAllDentists = async (req, res) => {
     try {
