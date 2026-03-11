@@ -136,6 +136,8 @@ const Patients = () => {
         input: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }
     };
 
+    const today = new Date().toISOString().split("T")[0];
+
     return (
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Patients Management</h2>
@@ -189,7 +191,13 @@ const Patients = () => {
                         </div>
                         <div style={styles.inputGroup}>
                             <label>DOB</label>
-                            <input style={styles.input} type="date" name="DOB" value={formData.DOB} onChange={handleInputChange} />
+                            <input 
+                                style={styles.input} 
+                                type="date" 
+                                max={today}
+                                name="DOB" 
+                                value={formData.DOB} 
+                                onChange={handleInputChange} />
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Phone No</label>
