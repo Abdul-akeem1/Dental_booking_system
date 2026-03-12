@@ -10,6 +10,15 @@ exports.createTreatment = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    //validate length should not be less than 30 mins, or not more than 240 mins (4hrs)
+    if (lengthMins < 30) {
+      return res.status(400).json({ message: "Treatment duration must be atleast 30 mins."});
+    };
+
+    if (lengthMins > 240) {
+      return res.status(400).json({ message: "Treatment duration too long" });
+    };
+
     const treatment = await Treatment.create({
       type,
       price,
@@ -79,11 +88,23 @@ exports.updateTreatment = async (req, res) => {
       }
     }
 
+    //validate length should not be less than 30 mins, or not more than 240 mins (4hrs)
+    if (updates.lengthMins !== undefined) {
+      if (updates.lengthMins < 30) {
+        return res.status(400).json({ message: "Treatment duration must be atleast 30 mins."})
+      };
+
+      if (updates.lengthMins > 240) {
+        return res.status(400).json({ message: "Treatment duration too long" })
+      };
+    };
+
     const updatedTreatment = await Treatment.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
     });
 
+  
     if (!updatedTreatment) {
       return res.status(404).json({ message: "Treatment not found" });
     }
