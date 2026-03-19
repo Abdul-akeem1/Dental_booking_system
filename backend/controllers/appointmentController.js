@@ -16,8 +16,32 @@ exports.createAppointment = async (req, res) => {
             date, time, dentist, treatment, patient, appointmentComplete: Boolean(appointmentComplete)
         });
 
+        /* // Populate patient, dentist, and treatment to send a comprehensive email
+        const populatedAppointment = await Appointment.findById(appointment._id)
+            .populate("patient", "firstName lastName email")
+            .populate("dentist", "firstName lastName")
+            .populate("treatment", "type price");
+
+         // Send confirmation email to the patient
+        if (populatedAppointment.patient && populatedAppointment.patient.email) {
+            const message = `Dear ${populatedAppointment.patient.firstName},\n\nYour appointment has been successfully booked.\n\nDetails:\nDate: ${date}\nTime: ${time}\nDentist: Dr. ${populatedAppointment.dentist.firstName} ${populatedAppointment.dentist.lastName}\nTreatment: ${populatedAppointment.treatment.type}\n\nThank you for choosing our clinic!`;
+            
+            try {
+                // Ensure nodemailer doesn't crash the appointment creation if it fails
+                const sendEmail = require("../utils/sendEmail");
+                await sendEmail({
+                    email: populatedAppointment.patient.email,
+                    subject: "Appointment Confirmation",
+                    message,
+                });
+            } catch (emailError) {
+                console.error("Error sending confirmation email:", emailError);
+            }
+        }*/
+
         return res.status(201).json({ message: "Appointment created", appointment });
     } catch (err) {
+        console.error("Error creating appointment:", err);
         return res.status(500).json({ message: "Server error" });
     }
 };
