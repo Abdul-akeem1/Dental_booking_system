@@ -53,6 +53,9 @@ const Sidebar = () => {
                 <NavLink to="/treatments" style={linkStyle}>
                     <LayoutDashboard size={20} /> Treatments
                 </NavLink>
+                <NavLink to="/schedule" style={linkStyle}>
+                    <LayoutDashboard size={20} /> Schedule
+                </NavLink>
             </nav>
         </div>
     );

@@ -11,6 +11,7 @@ import Appointments from "./pages/Appointments";
 import Patients from "./pages/Patients";
 import Dentists from "./pages/Dentists";
 import Treatments from "./pages/Treatments";
+import Schedule from "./pages/Schedule";
 
 
 
@@ -40,6 +41,7 @@ const App = () => {
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/dentists" element={<Dentists />} />
                 <Route path="/treatments" element={<Treatments />} />
+                <Route path="/schedule" element={<Schedule />} />
                 {/* Fallback */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
