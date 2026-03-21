@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
   county: String,
   country: String,
   Eircode: String,
-  password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 

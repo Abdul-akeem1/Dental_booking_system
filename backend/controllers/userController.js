@@ -10,6 +10,7 @@ const User = require("../models/User");
 
 
 // --------------------------LOGIN USER------------------------------
+/*
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -44,6 +45,7 @@ exports.loginUser = async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 };
+*/
 
 
 // --------------------------CREATE USER------------------------------
@@ -105,11 +107,26 @@ exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find({})
             .select("-password")
-            .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 })
+            .lean();
+
+        const Appointment = require("../models/Appointment");
+        const appointments = await Appointment.find({}).populate("treatment", "price");
+
+        const usersWithOwed = users.map(user => {
+            const userAppointments = appointments.filter(a => a.patient && a.patient.toString() === user._id.toString());
+            const amountOwed = userAppointments.reduce((sum, appt) => {
+                if (appt.treatment && appt.treatment.price) {
+                    return sum + appt.treatment.price;
+                }
+                return sum;
+            }, 0);
+            return { ...user, amountOwed };
+        });
 
         return res.status(200).json({
-            count: users.length,
-            users,
+            count: usersWithOwed.length,
+            users: usersWithOwed,
         });
     } catch (err) {
         return res.status(500).json({ message: "Server error" });
@@ -127,11 +144,22 @@ exports.getUserById = async (req, res) => {
             return res.status(400).json({ message: "Invalid user id" });
         }
 
-        const user = await User.findById(id).select("-password");
+        const user = await User.findById(id).select("-password").lean();
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+
+        const Appointment = require("../models/Appointment");
+        const appointments = await Appointment.find({ patient: id }).populate("treatment", "price");
+        const amountOwed = appointments.reduce((sum, appt) => {
+            if (appt.treatment && appt.treatment.price) {
+                return sum + appt.treatment.price;
+            }
+            return sum;
+        }, 0);
+
+        user.amountOwed = amountOwed;
 
         return res.status(200).json(user);
     } catch (err) {

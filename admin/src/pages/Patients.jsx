@@ -21,8 +21,7 @@ const Patients = () => {
         town: "",
         county: "",
         country: "",
-        Eircode: "",
-        password: ""
+        Eircode: ""
     });
 
     const fetchPatients = async () => {
@@ -58,7 +57,7 @@ const Patients = () => {
         setFormMode("add");
         setFormData({
             firstName: "", lastName: "", DOB: "", phone: "", email: "",
-            street: "", town: "", county: "", country: "", Eircode: "", password: ""
+            street: "", town: "", county: "", country: "", Eircode: ""
         });
         setShowForm(true);
         setSelectedPatient(null);
@@ -79,8 +78,7 @@ const Patients = () => {
             town: selectedPatient.town || "",
             county: selectedPatient.county || "",
             country: selectedPatient.country || "",
-            Eircode: selectedPatient.Eircode || "",
-            password: "" // Keep password empty for security, only send if changing
+            Eircode: selectedPatient.Eircode || ""
         });
         setShowForm(true);
     };
@@ -109,7 +107,6 @@ const Patients = () => {
                 toast.success("Patient added successfully");
             } else {
                 const updateData = { ...formData };
-                if (!updateData.password) delete updateData.password;
                 await axios.put(`${API_URL}/${selectedPatient._id}`, updateData);
                 toast.success("Patient updated successfully");
             }
@@ -149,6 +146,12 @@ const Patients = () => {
                                 <th style={styles.th}>Email</th>
                                 <th style={styles.th}>Phone</th>
                                 <th style={styles.th}>DOB</th>
+                                <th style={styles.th}>Street</th>
+                                <th style={styles.th}>Town</th>
+                                <th style={styles.th}>County</th>
+                                <th style={styles.th}>Country</th>
+                                <th style={styles.th}>Eircode</th>
+                                <th style={styles.th}>Amount Owed</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -162,6 +165,12 @@ const Patients = () => {
                                     <td style={styles.td}>{p.email}</td>
                                     <td style={styles.td}>{p.phone}</td>
                                     <td style={styles.td}>{p.DOB ? new Date(p.DOB).toLocaleDateString() : 'N/A'}</td>
+                                    <td style={styles.td}>{p.street}</td>
+                                    <td style={styles.td}>{p.town}</td>
+                                    <td style={styles.td}>{p.county}</td>
+                                    <td style={styles.td}>{p.country}</td>
+                                    <td style={styles.td}>{p.Eircode}</td>
+                                    <td style={styles.td}>€{(p.amountOwed || 0).toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -189,7 +198,7 @@ const Patients = () => {
                         </div>
                         <div style={styles.inputGroup}>
                             <label>DOB</label>
-                            <input style={styles.input} type="date" name="DOB" value={formData.DOB} onChange={handleInputChange} />
+                            <input style={styles.input} required type="date" name="DOB" value={formData.DOB} onChange={handleInputChange} />
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Phone No</label>
@@ -197,29 +206,27 @@ const Patients = () => {
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Email</label>
-                            <input style={styles.input} type="email" required name="email" value={formData.email} onChange={handleInputChange} />
+                            <input style={styles.input} required type="email" name="email" value={formData.email} onChange={handleInputChange} />
                         </div>
-                        {formMode === "add" && (
-                            <div style={styles.inputGroup}>
-                                <label>Password</label>
-                                <input style={styles.input} type="password" required name="password" value={formData.password} onChange={handleInputChange} />
-                            </div>
-                        )}
                         <div style={styles.inputGroup}>
                             <label>Street</label>
-                            <input style={styles.input} name="street" value={formData.street} onChange={handleInputChange} />
+                            <input style={styles.input} required name="street" value={formData.street} onChange={handleInputChange} />
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Town</label>
-                            <input style={styles.input} name="town" value={formData.town} onChange={handleInputChange} />
+                            <input style={styles.input} required name="town" value={formData.town} onChange={handleInputChange} />
+                        </div>
+                        <div style={styles.inputGroup}>
+                            <label>County</label>
+                            <input style={styles.input} required name="county" value={formData.county} onChange={handleInputChange} />
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Country</label>
-                            <input style={styles.input} name="country" value={formData.country} onChange={handleInputChange} />
+                            <input style={styles.input} required name="country" value={formData.country} onChange={handleInputChange} />
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Eircode</label>
-                            <input style={styles.input} name="Eircode" value={formData.Eircode} onChange={handleInputChange} />
+                            <input style={styles.input} required name="Eircode" value={formData.Eircode} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div style={{ marginTop: "20px" }}>
