@@ -94,6 +94,7 @@ const Schedule = () => {
                                 <th style={styles.th}>Treatment</th>
                                 <th style={styles.th}>Date</th>
                                 <th style={styles.th}>Time</th>
+                                <th style={styles.th}>Attended</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -108,6 +109,7 @@ const Schedule = () => {
                                     <td style={styles.td}>{a.treatment?.type}</td>
                                     <td style={styles.td}>{a.date ? new Date(a.date).toLocaleDateString() : 'N/A'}</td>
                                     <td style={styles.td}>{a.time}</td> 
+                                    <td style={styles.td}>{a.attended ? "Yes" : "No"}</td> 
                                 </tr>
                             ))}
                         </tbody>

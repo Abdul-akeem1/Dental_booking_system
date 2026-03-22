@@ -7,6 +7,7 @@ const appointmentSchema = new mongoose.Schema({
   dentist: { type: mongoose.Schema.Types.ObjectId, ref: "Dentist", required: true },
   treatment: { type: mongoose.Schema.Types.ObjectId, ref: "Treatment", required: true },
   patient: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  attended: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("Appointment", appointmentSchema);

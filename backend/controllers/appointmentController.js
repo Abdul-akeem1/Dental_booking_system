@@ -6,14 +6,14 @@ const User = require("../models/User");
 
 exports.createAppointment = async (req, res) => {
     try {
-        const { date, time, dentist, treatment, patient, appointmentComplete } = req.body;
+        const { date, time, dentist, treatment, patient, attended } = req.body;
 
         if (!date || !time || !dentist || !treatment || !patient) {
             return res.status(400).json({ message: "Missing required fields" });
         }
 
         const appointment = await Appointment.create({
-            date, time, dentist, treatment, patient, appointmentComplete: Boolean(appointmentComplete)
+            date, time, dentist, treatment, patient, attended: Boolean(attended)
         });
 
         /* // Populate patient, dentist, and treatment to send a comprehensive email
@@ -78,7 +78,7 @@ exports.updateAppointment = async (req, res) => {
         const { id } = req.params;
         if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid ID" });
 
-        const allowedFields = ["date", "time", "dentist", "treatment", "patient", "appointmentComplete"];
+        const allowedFields = ["date", "time", "dentist", "treatment", "patient", "attended"];
         const updates = {};
         for (const key of allowedFields) {
             if (req.body[key] !== undefined) updates[key] = req.body[key];

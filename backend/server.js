@@ -1,4 +1,6 @@
 require("dotenv").config();
+// Force Node to use Google/Cloudflare DNS to bypass restrictive ISPs blocking MongoDB Atlas
+require("dns").setServers(["8.8.8.8", "1.1.1.1"]);
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
