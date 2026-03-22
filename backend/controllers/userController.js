@@ -71,6 +71,62 @@ exports.createUser = async (req, res) => {
         // 3) hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+
+        //Validations
+        //validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(normalisedEmail)) {
+            return res.status(400).json({ message: "Invalid email format" });
+        }
+
+        //validate phone number (Irish format)
+        const phoneRegex = /^08[0-9]{8}$/;
+        if(phone && !phoneRegex.test(phone)) {
+            return res.status(400).json({ message: "Invalid phone number" });
+        }
+
+        //validate DOB (must be atleast 18)
+        const dobDate = new Date(DOB);
+        const today = new Date();
+
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const monthDiff = today.getMonth() - dobDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+            age--;
+        }
+
+        if (age > 120) {
+            return res.status(400).json({ message: "Invalid date of birth" });
+        }
+
+        if (dobDate > today) {
+            return res.status(400).json({ message: "DOB cannot be in the future." });
+        }
+
+        //validate address fields
+        const textRegex = /^[A-Za-z\s'-]{2,50}$/;
+
+        if (town && !textRegex.test(town)) {
+            return res.status(400).json({ message: "Invalid town name" });
+        }
+
+        if (county && !textRegex.test(county)) {
+            return res.status(400).json({ message: "Invalid county name" });
+        }
+
+        if (country && !textRegex.test(country)) {
+            return res.status(400).json({ message: "Invalid country name" });
+        }
+
+        //validate eircode
+        const eircodeRegex = /^[A-Za-z0-9]{3}\s?[A-Za-z0-9]{4}$/;
+
+        if (!eircodeRegex.test(Eircode)) {
+            return res.status(400).json({ message: "Invalid Eircode format" });
+        }
+
+
         // 4) create user (only allowed fields)
         const user = await User.create({
             firstName,
@@ -176,6 +232,7 @@ exports.updateUser = async (req, res) => {
     try {
         const { id } = req.params;
 
+        //validate user ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Invalid user id" });
         }
@@ -185,6 +242,7 @@ exports.updateUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        //prepare allowed fields
         const allowedFields = ["firstName", "lastName", "DOB", "phone", "email", "street", "town", "county", "country", "Eircode", "password"];
         const updates = {};
 
@@ -194,6 +252,7 @@ exports.updateUser = async (req, res) => {
             }
         }
 
+        //email validation and duplicate check
         if (updates.email) {
             updates.email = updates.email.trim().toLowerCase();
 
@@ -201,12 +260,72 @@ exports.updateUser = async (req, res) => {
             if (emailOwner && emailOwner._id.toString() !== id) {
                 return res.status(400).json({ message: "Email already in use" });
             }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailRegex.test(updates.email)) {
+                return res.status(400).json({ message: "Invalid email format" });
+            }
         }
 
+        //password hashing
         if (updates.password) {
             updates.password = await bcrypt.hash(updates.password, 10);
         }
 
+        //phone validation
+        if (updates.phone) {
+            const phoneRegex = /^08[0-9]{8}$/;
+            if(updates.phone && !phoneRegex.test(updates.phone)) {
+                return res.status(400).json({ message: "Invalid phone number" });
+            }
+        }
+
+        //DOB validation
+        if (updates.DOB) {
+            const dobDate = new Date(updates.DOB);
+            const today = new Date();
+
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const monthDiff = today.getMonth() - dobDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+
+            if (age > 120) {
+                return res.status(400).json({ message: "Invalid date of birth" });
+            }
+
+            if (dobDate > today) {
+                return res.status(400).json({ message: "DOB cannot be in the future." });
+            }
+        }
+
+        //adress validation
+        const textRegex = /^[A-Za-z\s'-]{2,50}$/;
+
+        if (updates.town && !textRegex.test(updates.town)) {
+            return res.status(400).json({ message: "Invalid town name" });
+        }
+
+        if (updates.county && !textRegex.test(updates.county)) {
+            return res.status(400).json({ message: "Invalid county name" });
+        }
+
+        if (updates.country && !textRegex.test(updates.country)) {
+            return res.status(400).json({ message: "Invalid country name" });
+        }
+
+        //eircode validation
+        if (updates.Eircode) {
+            const eircodeRegex = /^[A-Za-z0-9]{3}\s?[A-Za-z0-9]{4}$/;
+
+            if (!eircodeRegex.test(updates.Eircode)) {
+                return res.status(400).json({ message: "Invalid Eircode format" });
+            }
+        }
+
+        //update user
         const updatedUser = await User.findByIdAndUpdate(id, updates, {
             new: true,
             runValidators: true,
