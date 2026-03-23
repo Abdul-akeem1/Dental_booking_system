@@ -88,6 +88,26 @@ const Treatments = () => {
                 lengthMins: Number(formData.lengthMins)
             };
 
+            //validations
+            //prevent negative values
+            if (payload.price < 0) {
+                return toast.error("Price cannot be negative");
+            }
+
+            if (payload.lengthMins < 0) {
+                return toast.error("Length cannot be negative");
+            }
+
+            //validate length should not be less than 30 mins, or not more than 240 mins (4hrs)
+            if (payload.lengthMins < 30) {
+                return toast.error("Treatment duration must be atleast 30 mins.")
+            }
+
+            if (payload.lengthMins > 240) {
+                return toast.error("Treatment duration too long.")
+            }
+
+
             if (formMode === "add") {
                 await axios.post(API_URL, payload);
                 toast.success("Treatment added successfully");
@@ -165,11 +185,23 @@ const Treatments = () => {
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Price (€)</label>
-                            <input style={styles.input} type="number" required name="price" value={formData.price} onChange={handleInputChange} />
+                            <input 
+                                style={styles.input} 
+                                type="number"                                 
+                                required 
+                                name="price" 
+                                value={formData.price} 
+                                onChange={handleInputChange} />
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Length (Mins)</label>
-                            <input style={styles.input} type="number" required name="lengthMins" value={formData.lengthMins} onChange={handleInputChange} />
+                            <input 
+                                style={styles.input} 
+                                type="number" 
+                                required 
+                                name="lengthMins" 
+                                value={formData.lengthMins} 
+                                onChange={handleInputChange} />
                         </div>
                     </div>
                     <div style={{ marginTop: "20px" }}>
