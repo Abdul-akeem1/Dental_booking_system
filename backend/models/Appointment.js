@@ -9,7 +9,7 @@ const appointmentSchema = new mongoose.Schema({
   patient: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   attended: { type: Boolean, default: false },
   paymentStatus: {type: String, default: 'unpaid' },
-  discount: {type: number}
+  discount: {type: Number}
 });
 
 module.exports = mongoose.model("Appointment", appointmentSchema);

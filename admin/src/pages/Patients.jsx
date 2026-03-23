@@ -200,9 +200,9 @@ const Patients = () => {
                         </div>
                         <div style={styles.inputGroup}>
                             <label>DOB</label>
-<<<<<<< HEAD
+
                             <input style={styles.input} required type="date" name="DOB" value={formData.DOB} onChange={handleInputChange} />
-=======
+
                             <input 
                                 style={styles.input} 
                                 type="date" 
@@ -210,7 +210,7 @@ const Patients = () => {
                                 name="DOB" 
                                 value={formData.DOB} 
                                 onChange={handleInputChange} />
->>>>>>> desiree
+
                         </div>
                         <div style={styles.inputGroup}>
                             <label>Phone No</label>
