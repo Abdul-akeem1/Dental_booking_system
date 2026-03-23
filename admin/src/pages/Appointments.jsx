@@ -15,13 +15,16 @@ const Appointments = () => {
     const [patients, setPatients] = useState([]);
     const [dentists, setDentists] = useState([]);
     const [treatments, setTreatments] = useState([]);
+    const [showBillModel, setShowBillModel] = useState(false);
+    const [discount, setDiscount] = useState(0);
 
     const [formData, setFormData] = useState({
         patient: "",
         dentist: "",
         treatment: "",
         date: "",
-        time: ""
+        time: "",
+        attended: false
     });
 
     const fetchData = async () => {
@@ -67,12 +70,13 @@ const Appointments = () => {
     };
 
     const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        setFormData({ ...formData, [e.target.name]: value });
     };
 
     const openAddForm = () => {
         setFormMode("add");
-        setFormData({ patient: "", dentist: "", treatment: "", date: "", time: "" });
+        setFormData({ patient: "", dentist: "", treatment: "", date: "", time: "", attended: false });
         setShowForm(true);
         setSelectedAppointment(null);
     };
@@ -85,10 +89,16 @@ const Appointments = () => {
             dentist: selectedAppointment.dentist?._id || "",
             treatment: selectedAppointment.treatment?._id || "",
             date: selectedAppointment.date || "",
-            time: selectedAppointment.time || ""
+            time: selectedAppointment.time || "",
+            attended: selectedAppointment.attended || false
         });
         setShowForm(true);
     };
+
+    const openBillModel = () => {
+        if (!selectedAppointment) return toast.warn("Please select an appointment from the table first");
+        setShowBillModel(true);
+    }
 
     const handleDelete = async () => {
         if (!selectedAppointment) return toast.warn("Please select an appointment from the table first");
@@ -135,7 +145,29 @@ const Appointments = () => {
         form: { border: "1px solid #ddd", padding: "20px", borderRadius: "5px", backgroundColor: "#f9f9f9" },
         inputGroup: { display: "flex", flexDirection: "column", marginBottom: "10px" },
         input: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" },
-        select: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }
+        select: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" },
+
+        //This is the bill modal styles
+        modalOverlay: {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Dark semi-transparent background
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000 // Ensures it sits on top of everything
+        },
+        modalContent: {
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "8px",
+            width: "500px",
+            maxWidth: "90%",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        }
     };
 
     return (
@@ -152,6 +184,8 @@ const Appointments = () => {
                                 <th style={styles.th}>Patient</th>
                                 <th style={styles.th}>Dentist</th>
                                 <th style={styles.th}>Treatment</th>
+                                <th style={styles.th}>Payment Status</th>
+                                <th style={styles.th}>Attended</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -166,6 +200,7 @@ const Appointments = () => {
                                     <td style={styles.td}>{a.patient?.firstName} {a.patient?.lastName}</td>
                                     <td style={styles.td}>{a.dentist?.firstName} {a.dentist?.lastName}</td>
                                     <td style={styles.td}>{a.treatment?.type}</td>
+                                    <td style={styles.td}>{a.attended ? "Yes" : "No"}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -176,6 +211,7 @@ const Appointments = () => {
             <div style={styles.btnContainer}>
                 <button style={styles.btn} onClick={openAddForm}>Add Appointment</button>
                 <button style={styles.btn} onClick={openUpdateForm}>Update Selected</button>
+                <button style={styles.btn} onliclick={openBillModel}>Genereate Bill</button>
                 <button style={{ ...styles.btn, ...styles.btnDelete }} onClick={handleDelete}>Delete Selected</button>
             </div>
 
@@ -224,6 +260,11 @@ const Appointments = () => {
                             <input style={styles.input} type="time" required name="time" value={formData.time} onChange={handleInputChange} />
                         </div>
 
+                        <div style={{ ...styles.inputGroup, flexDirection: "row", alignItems: "center", gap: "10px", gridColumn: "span 2" }}>
+                            <label style={{ fontWeight: "bold" }}>Attended</label>
+                            <input type="checkbox" name="attended" checked={formData.attended} onChange={handleInputChange} style={{ width: "20px", height: "20px", cursor: "pointer" }} />
+                        </div>
+
                     </div>
                     <div style={{ marginTop: "20px" }}>
                         <button style={{ ...styles.btn, marginRight: "10px" }} type="submit">Submit</button>
@@ -231,6 +272,8 @@ const Appointments = () => {
                     </div>
                 </form>
             )}
+
+            
         </div>
     );
 };
