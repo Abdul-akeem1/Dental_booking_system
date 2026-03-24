@@ -15,7 +15,7 @@ const Appointments = () => {
     const [patients, setPatients] = useState([]);
     const [dentists, setDentists] = useState([]);
     const [treatments, setTreatments] = useState([]);
-    const [showBillModel, setShowBillModel] = useState(false);
+    const [showBillModal, setShowBillModal] = useState(false);
     const [discount, setDiscount] = useState(0);
 
     const [formData, setFormData] = useState({
@@ -95,9 +95,9 @@ const Appointments = () => {
         setShowForm(true);
     };
 
-    const openBillModel = () => {
+    const openBillModal = () => {
         if (!selectedAppointment) return toast.warn("Please select an appointment from the table first");
-        setShowBillModel(true);
+        setShowBillModal(!showBillModal);
     }
 
     const handleDelete = async () => {
@@ -220,7 +220,7 @@ const Appointments = () => {
             <div style={styles.btnContainer}>
                 <button style={styles.btn} onClick={openAddForm}>Add Appointment</button>
                 <button style={styles.btn} onClick={openUpdateForm}>Update Selected</button>
-                <button style={styles.btn} onliclick={openBillModel}>Genereate Bill</button>
+                <button style={styles.btn} onClick={openBillModal}>Generate Bill</button>
                 <button style={{ ...styles.btn, ...styles.btnDelete }} onClick={handleDelete}>Delete Selected</button>
             </div>
 
@@ -301,8 +301,26 @@ const Appointments = () => {
                 </form>
             )}
 
-            
+            {showBillModal && selectedAppointment && (
+            <div className="showModal">
+                <div style={styles.modalOverlay}>
+                        <div style={styles.modalContent}>
+                            <h2>Appointment Details</h2>
+                            <p><strong>Dentist:</strong> {selectedAppointment.dentist?.firstName} {selectedAppointment.dentist?.lastName}</p>
+                            <p><strong>Treatment:</strong> {selectedAppointment.treatment?.type}</p>
+                            <p><strong>Date:</strong> {selectedAppointment.date}</p>
+                            <p><strong>Time:</strong> {selectedAppointment.time}</p>
+                            <p><strong>Attended:</strong> {selectedAppointment.attended ? "Yes" : "No"}</p>
+                            <div>
+                                <button onClick={() =>setShowBillModal(false)}>cancel</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            )}
+
         </div>
+        
     );
 };
 
