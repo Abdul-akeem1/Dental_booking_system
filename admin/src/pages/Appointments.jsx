@@ -334,6 +334,22 @@ const Appointments = () => {
                             </div>
                         </div>
 
+                        {/* PATIENT & APPOINTMENT DETAILS */}
+                        <div style={{ margin: '20px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                            <div>
+                                <p style={{ margin: '5px 0', fontSize: '13px', color: '#666' }}>Bill To:</p>
+                                <p style={{ margin: 0, fontWeight: 'bold' }}>
+                                    {selectedAppointment.patient?.firstName} {selectedAppointment.patient?.lastName}
+                                </p>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <p style={{ margin: '5px 0', fontSize: '13px', color: '#666' }}>Date of Appointment:</p>
+                                <p style={{ margin: 0, fontWeight: 'bold' }}>
+                                    {new Date(selectedAppointment.date).toLocaleDateString()}
+                                </p>
+                            </div>
+                        </div>
+
                         <div>
                             <button style={{...styles.btn, backgroundColor: "#6c757d"}} onClick={() => setShowBillModal(false)}>cancel</button>
                         </div>
