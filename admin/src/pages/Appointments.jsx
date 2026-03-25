@@ -171,9 +171,9 @@ const Appointments = () => {
     };
 
     const timeSlots = [
-            "09:00","09:30","10:00","10:30","11:00","11:30",
-            "12:00","12:30","14:00","14:30","15:00","15:30",
-            "16:00","16:30"
+        "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+        "12:00", "12:30", "14:00", "14:30", "15:00", "15:30",
+        "16:00", "16:30"
     ];
 
     const today = new Date().toISOString().split("T")[0]; //for min in html (so it disables days before today)
@@ -261,14 +261,14 @@ const Appointments = () => {
 
                         <div style={styles.inputGroup}>
                             <label>Date</label>
-                            <input 
-                                style={styles.input} 
-                                type="date" 
+                            <input
+                                style={styles.input}
+                                type="date"
                                 min={today}
-                                required 
-                                name="date" 
-                                value={formData.date} 
-                                onChange={handleInputChange} 
+                                required
+                                name="date"
+                                value={formData.date}
+                                onChange={handleInputChange}
                             />
                         </div>
 
@@ -280,7 +280,7 @@ const Appointments = () => {
                                 value={formData.time}
                                 onChange={handleInputChange}
                                 required
-                                >
+                            >
                                 <option value="">Select Time</option>
                                 {timeSlots.map(slot => (
                                     <option key={slot} value={slot}>{slot}</option>
@@ -302,25 +302,48 @@ const Appointments = () => {
             )}
 
             {showBillModal && selectedAppointment && (
-            <div className="showModal">
                 <div style={styles.modalOverlay}>
-                        <div style={styles.modalContent}>
-                            <h2>Appointment Details</h2>
-                            <p><strong>Dentist:</strong> {selectedAppointment.dentist?.firstName} {selectedAppointment.dentist?.lastName}</p>
-                            <p><strong>Treatment:</strong> {selectedAppointment.treatment?.type}</p>
-                            <p><strong>Date:</strong> {selectedAppointment.date}</p>
-                            <p><strong>Time:</strong> {selectedAppointment.time}</p>
-                            <p><strong>Attended:</strong> {selectedAppointment.attended ? "Yes" : "No"}</p>
+                    <div style={styles.modalContent}>
+                        
+                        {/* INVOICE HEADER */} 
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #eee', paddingBottom: '15px', marginBottom: '20px' }}>
+                            {/* Left Side: Logo & Title */}
                             <div>
-                                <button onClick={() =>setShowBillModal(false)}>cancel</button>
+                                <h2 className="logo-text" style={{ margin: 0, color: "var(--color-primary-dark)" }}>🦷 DentalCare</h2>
+                                <p style={{ margin: 0, fontSize: '14px', color: '#666', marginTop: '5px' }}>Official Invoice</p>
+                            </div>
+
+                            {/* Right Side: Invoice # & Status Badge */}
+                            <div style={{ textAlign: 'right' }}>
+                                {/* I took the last 6 characters of the MongoDB appointments ID to make a random Invoice number */}
+                                <p style={{ margin: 0, fontWeight: 'bold', color: '#555', marginBottom: '8px' }}>
+                                    Invoice #{selectedAppointment._id.substring(18).toUpperCase()}
+                                </p>
+
+                                {/*Status Badge (Green if paid, Red if unpaid) */}
+                                <span style={{
+                                    padding: '5px 12px',
+                                    borderRadius: '15px',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                    backgroundColor: selectedAppointment.paymentStatus === 'paid' ? '#d4edda' : '#f8d7da',
+                                    color: selectedAppointment.paymentStatus === 'paid' ? '#155724' : '#721c24'
+                                }}>
+                                    {selectedAppointment.paymentStatus === 'paid' ? 'PAID' : 'UNPAID'}
+                                </span>
                             </div>
                         </div>
-                </div>
-            </div>
-            )}
 
-        </div>
-        
+                        <div>
+                            <button style={{...styles.btn, backgroundColor: "#6c757d"}} onClick={() => setShowBillModal(false)}>cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+            )}
+            
+        </div >
+  
     );
 };
 
