@@ -304,8 +304,8 @@ const Appointments = () => {
             {showBillModal && selectedAppointment && (
                 <div style={styles.modalOverlay}>
                     <div style={styles.modalContent}>
-                        
-                        {/* INVOICE HEADER */} 
+
+                        {/* INVOICE HEADER */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #eee', paddingBottom: '15px', marginBottom: '20px' }}>
                             {/* Left Side: Logo & Title */}
                             <div>
@@ -350,16 +350,83 @@ const Appointments = () => {
                             </div>
                         </div>
 
-                        <div>
-                            <button style={{...styles.btn, backgroundColor: "#6c757d"}} onClick={() => setShowBillModal(false)}>cancel</button>
+                        {/* TREATMENT & PRICE TABLE */}
+                        <div style={{ margin: '20px 0' }}>
+                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <thead>
+                                    <tr style={{ backgroundColor: '#f8f9fa', borderBottom: '2px solid #eee' }}>
+                                        <th style={{ padding: '12px', textAlign: 'left', fontWeight: 'bold', color: '#555' }}>Treatment</th>
+                                        <th style={{ padding: '12px', textAlign: 'left', fontWeight: 'bold', color: '#555' }}>Dentist</th>
+                                        <th style={{ padding: '12px', textAlign: 'right', fontWeight: 'bold', color: '#555' }}>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style={{ borderBottom: '1px solid #eee' }}>
+                                        <td style={{ padding: '12px' }}>{selectedAppointment.treatment?.type}</td>
+                                        <td style={{ padding: '12px' }}>
+                                            {selectedAppointment.dentist?.firstName} {selectedAppointment.dentist?.lastName}
+                                        </td>
+                                        <td style={{ padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>
+                                            €{(selectedAppointment.treatment?.price || 0).toFixed(2)}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+
+
+                        {/*TOTALS & DISCOUNT*/}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px', marginTop: '10px' }}>
+                            <div style={{ width: '100%' }}>
+                                {/* Subtotal */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', color: '#555' }}>
+                                    <span>Subtotal:</span>
+                                    <span>€{(selectedAppointment.treatment?.price || 0).toFixed(2)}</span>
+                                </div>
+                                
+                                {/* Discount Input */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', alignItems: 'center' }}>
+                                    <span style={{ color: '#555' }}>Discount (€):</span>
+                                    <input 
+                                        type="number" 
+                                        min="0"
+                                        value={discount} 
+                                        onChange={(e) => setDiscount(Number(e.target.value))} 
+                                        style={{ width: '70px', padding: '4px', textAlign: 'right', border: '1px solid #ccc', borderRadius: '4px' }} 
+                                    />
+                                </div>
+
+                                {/* Final Total Due */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2em', borderTop: '2px solid #333', paddingTop: '10px', marginTop: '5px' }}>
+                                    <strong>Total Due:</strong>
+                                    <strong>€{Math.max(0, (selectedAppointment.treatment?.price || 0) - discount).toFixed(2)}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* BUTTONS */}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                            {/*Print Button */}
+                            <button style={{ ...styles.btn, backgroundColor: '#17a2b8' }} onClick={() => window.print()}>
+                                Print Invoice
+                            </button>
+                            {/* made it so that it only shows the Mark as Paid button if the appointment is unpaid */}
+                            {selectedAppointment.paymentStatus !== 'paid' && (
+                                <button style={{ ...styles.btn, backgroundColor: '#28a745' }} onClick={() => alert("Paid")}>
+                                    Mark as Paid
+                                </button>
+                            )}
+                            {/* The Cancel Button */}
+                            <button style={{ ...styles.btn, backgroundColor: "#6c757d" }} onClick={() => setShowBillModal(false)}>cancel</button>
+                        </div>
+
 
                     </div>
                 </div>
             )}
-            
+
         </div >
-  
+
     );
 };
 
