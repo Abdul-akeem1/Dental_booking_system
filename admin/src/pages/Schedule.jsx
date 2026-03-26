@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import './Schedule.css';
 
 const API_URL = "http://localhost:5000/api/appointments";
 
@@ -13,6 +14,10 @@ const Schedule = () => {
     const [date, setDate] = useState("");
     const [selectedDentist, setSelectedDentist] = useState("");
 
+    //weekly/daily view
+    const [viewMode, setViewMode] = useState("");
+    const [allAppointments, setAllAppointments] = useState([]);
+
 
     const fetchData = async () => {
         setLoading(true);
@@ -21,8 +26,11 @@ const Schedule = () => {
                 axios.get(API_URL),
                 axios.get("http://localhost:5000/api/dentists"),
             ]);
+
             setAppointments(apptsRes.data.appointments || []);
+            setAllAppointments(apptsRes.data.appointments || []); //original copy for filtering later
             setDentists(dentistsRes.data.dentists || []);
+            
         } catch (error) {
             toast.error("Failed to load generic data");
         }
@@ -38,7 +46,9 @@ const Schedule = () => {
     const fetchAppointments = async () => {
         try {
             const res = await axios.get(API_URL);
+
             setAppointments(res.data.appointments || []);
+            setAllAppointments(res.data.appointments || []);
         } catch (error) {
             toast.error("Failed to refresh appointments");
         }
@@ -48,20 +58,77 @@ const Schedule = () => {
         setSelectedAppointment(appt);
     };
 
-    // filter dentists by date
-    const handleFilterByDate = () => {
-        if (!date) return fetchAppointments();
-        const filtered = appointments.filter(a => a.date && a.date.startsWith(date));
+    // // filter dentists by date
+    // const handleFilterByDate = () => {
+    //     if (!date) return fetchAppointments();
+    //     const filtered = appointments.filter(a => a.date && a.date.startsWith(date));
+    //     setAppointments(filtered);
+    // };
+
+    // // filter dentists by id
+    // const handleFilterByDentist = () => {
+    //     if (!selectedDentist) return fetchAppointments();
+    //     const filtered = appointments.filter(a => a.dentist?._id === selectedDentist);
+    //     setAppointments(filtered);
+    // };
+
+    
+    const handleApplyFilters = () => {
+        let filtered = allAppointments;
+
+        //filter by dentist
+        if (selectedDentist !== "") {
+            filtered = filtered.filter(a => a.dentist?._id === selectedDentist);
+        }
+
+        //filter by day
+        if (date !== ""&& viewMode === "day") {
+            filtered = filtered.filter(a => {
+                if (a.date) {
+                    return a.date === date;
+                }
+                return false;
+            });
+        }
+
+        //filter by week
+        if (date !== "" && viewMode === "week") {
+            const selectedDate = new Date(date);
+
+            //start of week - monday
+            const start = new Date(selectedDate); 
+            const day = selectedDate.getDay();
+            const diff = day === 0? -6 : 1 - day; 
+
+            start.setDate(selectedDate.getDate() + diff);
+            start.setHours(0, 0, 0, 0);
+
+            //end of week - sunday
+            const end = new Date(start);
+            end.setDate(start.getDate() + 6);
+            end.setHours(23, 59, 59, 999); //last millisecond of the day
+
+            //monday - sunday filter
+            filtered = filtered.filter(a => {
+                if (!a.date) {
+                    return false;
+                }
+
+                const appointmentDate = new Date(a.date);
+                return appointmentDate >= start&& appointmentDate <= end;
+            });
+        }
+        
         setAppointments(filtered);
     };
 
-    // filter dentists by id
-    const handleFilterByDentist = () => {
-        if (!selectedDentist) return fetchAppointments();
-        const filtered = appointments.filter(a => a.dentist?._id === selectedDentist);
-        setAppointments(filtered);
+    //clear filteres
+    const handleClearFilters = () => {
+        setDate("");
+        setSelectedDentist("");
+        setViewMode("");
+        setAppointments(allAppointments);
     };
-
 
     const styles = {
         mycontainer: { display: "flex", padding: "20px", gap: "20px" },
@@ -117,31 +184,47 @@ const Schedule = () => {
                 </div>
             )}
 
+            {/* Filter Section */}
             <div className="mycontainer" style={{ ...styles.mycontainer, alignItems: "center", flexWrap: "wrap", padding: "0" }}>
 
+                {/* Date filter */}
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <label style={{ fontSize: "14px", fontWeight: "bold", color: "#555", margin: 0 }}>Select Date :</label>
                     <div style={{ display: "flex", gap: "10px" }}>
                         <input type="date" style={styles.input} required name="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                        <button style={styles.btn} onClick={handleFilterByDate}>Filter by Date</button>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <label>
+                                <input type="radio" name="viewMode" value="day" disabled={!date} checked={viewMode === "day"} onChange={() => setViewMode("day")} />Day
+                            </label>
+                            <label>
+                                <input type="radio" name="viewMode" value="week" disabled={!date} checked={viewMode === "week"} onChange={() => setViewMode("week")}/>Week
+                            </label>
+                        </div>
+                        {/* <button style={styles.btn} onClick={handleFilterByDate1}>Filter by Date</button> */}
                     </div>
                 </div>
 
+                {/* Dentist filter */}
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <label style={{ fontSize: "14px", fontWeight: "bold", color: "#555", margin: 0 }}>Select Dentist :</label>
                     <div style={{ display: "flex", gap: "10px" }}>
                         <select style={styles.select} required name="dentist" value={selectedDentist} onChange={(e) => setSelectedDentist(e.target.value)}>
-                            <option value="">Select Dentist...</option>
+                            {/* <option value="">Select Dentist...</option> */}
+                            <option value="">All Dentists</option>
                             {dentists.map(d => (
                                 <option key={d._id} value={d._id}>{d.firstName} {d.lastName}</option>
                             ))}
                         </select>
-                        <button style={styles.btn} onClick={handleFilterByDentist}>Filter by Dentist</button>
+                        {/* <button style={styles.btn} onClick={handleFilterByDentist}>Filter by Dentist</button> */}
                     </div>
                 </div>
+                 
+                 {/* apply filter */}
+                <button style={styles.btn} className="apply-hover" onClick={handleApplyFilters}>Apply Filters</button>
 
+                {/* clear filter */}
                 <div style={{ display: "flex" }}>
-                    <button style={{ ...styles.btn, backgroundColor: "#6c757d" }} onClick={fetchAppointments}>Clear Filters</button>
+                    <button style={{ ...styles.btn, backgroundColor: "#6c757d"}} className="clear-hover" onClick={handleClearFilters}>Clear Filters</button>
                 </div>
 
             </div>
