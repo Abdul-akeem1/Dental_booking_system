@@ -201,7 +201,7 @@ const Patients = () => {
                         <div style={styles.inputGroup}>
                             <label>DOB</label>
 
-                            <input style={styles.input} required type="date" name="DOB" value={formData.DOB} onChange={handleInputChange} />
+                            {/* <input style={styles.input} required type="date" name="DOB" value={formData.DOB} onChange={handleInputChange} /> */}
 
                             <input 
                                 style={styles.input} 
