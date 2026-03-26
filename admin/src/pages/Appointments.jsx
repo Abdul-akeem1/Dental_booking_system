@@ -61,7 +61,7 @@ const Appointments = () => {
 
     const handleSelectRow = (appt) => {
         if (selectedAppointment?._id === appt._id) {
-            setSelectedAppointment(null);
+            setSelectedAppointment(null); // Deselect
             setShowForm(false);
         } else {
             setSelectedAppointment(appt);
@@ -128,6 +128,22 @@ const Appointments = () => {
             fetchAppointments();
         } catch (error) {
             toast.error(error.response?.data?.message || `Failed to ${formMode} appointment`);
+        }
+    };
+
+    const handlePayment = async () => {
+        try {
+            // updates only the payment fields
+            await axios.put(`${API_URL}/${selectedAppointment._id}`, {
+                paymentStatus: 'paid',
+                discount: discount
+            });
+            
+            toast.success("Payment successful!");
+            setShowBillModal(false);
+            fetchAppointments(); // Refresh the table so it visually turns green
+        } catch (error) {
+            toast.error("Failed to process payment");
         }
     };
 
@@ -412,7 +428,7 @@ const Appointments = () => {
                             </button>
                             {/* made it so that it only shows the Mark as Paid button if the appointment is unpaid */}
                             {selectedAppointment.paymentStatus !== 'paid' && (
-                                <button style={{ ...styles.btn, backgroundColor: '#28a745' }} onClick={() => alert("Paid")}>
+                                <button style={{ ...styles.btn, backgroundColor: '#28a745' }} onClick={() => handlePayment()}>
                                     Mark as Paid
                                 </button>
                             )}
