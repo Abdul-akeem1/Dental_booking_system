@@ -224,7 +224,7 @@ const Appointments = () => {
                                     <td style={styles.td}>{a.patient?.firstName} {a.patient?.lastName}</td>
                                     <td style={styles.td}>{a.dentist?.firstName} {a.dentist?.lastName}</td>
                                     <td style={styles.td}>{a.treatment?.type}</td>
-                                    <td style={styles.td}>{a.paymentStatus ? "paid" : "unpaid"}</td>
+                                    <td style={styles.td}>{a.paymentStatus === 'paid' ? "paid" : "unpaid"}</td>
                                     <td style={styles.td}>{a.attended ? "Yes" : "No"}</td>
                                 </tr>
                             ))}
