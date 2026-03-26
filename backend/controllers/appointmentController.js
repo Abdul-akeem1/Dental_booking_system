@@ -22,8 +22,19 @@ exports.createAppointment = async (req, res) => {
             return res.status(400).json({ message: "Appointment date must be today or in the future" });
         }
 
-        //prevent double booking
-        const existingAppointment = await Appointment.findOne({ dentist, date, time });
+        //allow times after now - 30 min interval(shouldnt need adjusted due to time slots)
+        if (today.getDate() ===currentDate.getDate()) {
+            currentDate.setHours(currentDate.getHours() > 10? currentDate.getHours() + 1 : 10)
+            currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0)
+        } else {
+            currentDate.setHours(10)
+            currentDate.setMinutes(0)
+        }
+
+        //prevent double booking  not working must be rechecked?????
+        const existingAppointment = await Appointment.findOne({
+             dentist, date, time 
+            });
         if (existingAppointment) {
             return res.status(400).json({ message: "This time slot is already booked"});
         }

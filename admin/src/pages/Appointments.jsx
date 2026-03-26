@@ -143,7 +143,7 @@ const Appointments = () => {
             "12:00","12:30","14:00","14:30","15:00","15:30",
             "16:00","16:30"
     ];
-
+    //const time html min for 30 min intervals 
     const today = new Date().toISOString().split("T")[0]; //for min in html (so it disables days before today)
 
     return (
