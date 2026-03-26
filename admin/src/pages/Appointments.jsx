@@ -61,7 +61,7 @@ const Appointments = () => {
 
     const handleSelectRow = (appt) => {
         if (selectedAppointment?._id === appt._id) {
-            setSelectedAppointment(null); // Deselect
+            setSelectedAppointment(null); // Deselects the row when clicked again
             setShowForm(false);
         } else {
             setSelectedAppointment(appt);
@@ -277,15 +277,26 @@ const Appointments = () => {
 
                         <div style={styles.inputGroup}>
                             <label>Date</label>
-                            <input
-                                style={styles.input}
-                                type="date"
-                                min={today}
-                                required
-                                name="date"
-                                value={formData.date}
-                                onChange={handleInputChange}
-                            />
+                            {formMode === "add" ? (
+                                <input
+                                    style={styles.input}
+                                    type="date"
+                                    min={today}
+                                    required
+                                    name="date"
+                                    value={formData.date}
+                                    onChange={handleInputChange}
+                                />
+                            ) : (
+                                <input
+                                    style={styles.input}
+                                    type="date"
+                                    required
+                                    name="date"
+                                    value={formData.date?.substring(0, 10)}
+                                    onChange={handleInputChange}
+                                />
+                            )}
                         </div>
 
                         <div style={styles.inputGroup}>

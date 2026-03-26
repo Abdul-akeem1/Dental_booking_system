@@ -98,14 +98,18 @@ exports.updateAppointment = async (req, res) => {
         const { id } = req.params;
         if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid ID" });
 
-        const allowedFields = ["date", "time", "dentist", "treatment", "patient", "attended"];
+        const existingAppt = await Appointment.findById(id);
+        if (!existingAppt) return res.status(404).json({ message: "Not found" });
+
+        
+        const allowedFields = ["date", "time", "dentist", "treatment", "patient", "attended", "paymentStatus", "discount"];
         const updates = {};
         for (const key of allowedFields) {
             if (req.body[key] !== undefined) updates[key] = req.body[key];
         }
 
-        //only allow dates after today
-        if (updates.date) {
+        // Only block past dates if the date is explicitly being CHANGED to a new past date
+        if (updates.date && updates.date !== existingAppt.date) {
             const appointmentDate = new Date(updates.date);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -114,21 +118,19 @@ exports.updateAppointment = async (req, res) => {
             }
         }
        
-        //prevent double booking for the same dentist at the same date and time
+        // Prevent double booking for the same dentist at the same date and time
         if (updates.date || updates.time || updates.dentist) {
-            const existingAppointment = await Appointment.findOne({
-                dentist: updates.dentist || updated.dentist,
-                date: updates.date || updated.date,
-                time: updates.time || updated.time,
+            const doubleBooking = await Appointment.findOne({
+                dentist: updates.dentist || existingAppt.dentist,
+                date: updates.date || existingAppt.date,
+                time: updates.time || existingAppt.time,
                 _id: { $ne: id } 
             });
 
-            if (existingAppointment) {
+            if (doubleBooking) {
                 return res.status(400).json({ message: "This time slot is already booked"})
             }
         }
-
-
 
         //update appointment
         const updated = await Appointment.findByIdAndUpdate(id, updates, { new: true })
@@ -136,9 +138,9 @@ exports.updateAppointment = async (req, res) => {
             .populate("treatment", "type price")
             .populate("patient", "firstName lastName");
 
-        if (!updated) return res.status(404).json({ message: "Not found" });
         return res.status(200).json({ message: "Updated", appointment: updated });
     } catch (err) {
+        console.error("Update Error:", err);
         return res.status(500).json({ message: "Server error" });
     }
 };
