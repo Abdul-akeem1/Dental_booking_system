@@ -8,8 +8,8 @@ const appointmentSchema = new mongoose.Schema({
   treatment: { type: mongoose.Schema.Types.ObjectId, ref: "Treatment", required: true },
   patient: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   attended: { type: Boolean, default: false },
-  paymentStatus: {type: String, default: 'unpaid' },
-  discount: {type: Number}
+  paymentStatus: { type: String, default: 'unpaid' },
+  discount: { type: Number }
 });
 
 module.exports = mongoose.model("Appointment", appointmentSchema);

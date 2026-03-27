@@ -138,7 +138,7 @@ const Appointments = () => {
                 paymentStatus: 'paid',
                 discount: discount
             });
-            
+
             toast.success("Payment successful!");
             setShowBillModal(false);
             fetchAppointments(); // Refresh the table so it visually turns green
@@ -295,6 +295,7 @@ const Appointments = () => {
                                     name="date"
                                     value={formData.date?.substring(0, 10)}
                                     onChange={handleInputChange}
+
                                 />
                             )}
                         </div>
@@ -410,16 +411,16 @@ const Appointments = () => {
                                     <span>Subtotal:</span>
                                     <span>€{(selectedAppointment.treatment?.price || 0).toFixed(2)}</span>
                                 </div>
-                                
+
                                 {/* Discount Input */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', alignItems: 'center' }}>
                                     <span style={{ color: '#555' }}>Discount (€):</span>
-                                    <input 
-                                        type="number" 
+                                    <input
+                                        type="number"
                                         min="0"
-                                        value={discount} 
-                                        onChange={(e) => setDiscount(Number(e.target.value))} 
-                                        style={{ width: '70px', padding: '4px', textAlign: 'right', border: '1px solid #ccc', borderRadius: '4px' }} 
+                                        value={discount}
+                                        onChange={(e) => setDiscount(Number(e.target.value))}
+                                        style={{ width: '70px', padding: '4px', textAlign: 'right', border: '1px solid #ccc', borderRadius: '4px' }}
                                     />
                                 </div>
 

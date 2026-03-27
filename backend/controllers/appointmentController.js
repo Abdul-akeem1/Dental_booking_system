@@ -25,7 +25,7 @@ exports.createAppointment = async (req, res) => {
         //prevent double booking
         const existingAppointment = await Appointment.findOne({ dentist, date, time });
         if (existingAppointment) {
-            return res.status(400).json({ message: "This time slot is already booked"});
+            return res.status(400).json({ message: "This time slot is already booked" });
         }
 
         const appointment = await Appointment.create({
@@ -101,7 +101,7 @@ exports.updateAppointment = async (req, res) => {
         const existingAppt = await Appointment.findById(id);
         if (!existingAppt) return res.status(404).json({ message: "Not found" });
 
-        
+
         const allowedFields = ["date", "time", "dentist", "treatment", "patient", "attended", "paymentStatus", "discount"];
         const updates = {};
         for (const key of allowedFields) {
@@ -117,18 +117,18 @@ exports.updateAppointment = async (req, res) => {
                 return res.status(400).json({ message: "Appointment date must be today or in the future" });
             }
         }
-       
+
         // Prevent double booking for the same dentist at the same date and time
         if (updates.date || updates.time || updates.dentist) {
             const doubleBooking = await Appointment.findOne({
                 dentist: updates.dentist || existingAppt.dentist,
                 date: updates.date || existingAppt.date,
                 time: updates.time || existingAppt.time,
-                _id: { $ne: id } 
+                _id: { $ne: id }
             });
 
             if (doubleBooking) {
-                return res.status(400).json({ message: "This time slot is already booked"})
+                return res.status(400).json({ message: "This time slot is already booked" })
             }
         }
 
