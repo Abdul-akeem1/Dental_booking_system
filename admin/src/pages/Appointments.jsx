@@ -291,6 +291,7 @@ const Appointments = () => {
                                 <input
                                     style={styles.input}
                                     type="date"
+                                    min={today}
                                     required
                                     name="date"
                                     value={formData.date?.substring(0, 10)}
