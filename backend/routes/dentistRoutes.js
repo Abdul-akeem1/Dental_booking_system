@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const dentistController = require("../controllers/dentistController");
 
+router.post("/login", dentistController.loginDentist);
 router.post("/", dentistController.createDentist);
 router.get("/", dentistController.getAllDentists);
 router.get("/:id", dentistController.getDentistById);
