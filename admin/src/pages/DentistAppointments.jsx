@@ -18,6 +18,17 @@ const DentistAppointments = () => {
         }
     };
 
+    const toggleAttended = async (id, currentStatus) => {
+        try {
+            // Send a partial update to toggle the attended boolean so this will be updated in the database
+            await axios.put(`${API_URL}/${id}`, { attended: !currentStatus });
+            toast.success(`Appointment marked as ${!currentStatus ? 'attended' : 'unattended'}`);
+            fetchAppointments(); // Refresh the table after success
+        } catch (error) {
+            toast.error("Failed to update status");
+        }
+    };
+
     useEffect(() => {
         fetchAppointments();
     }, []);
@@ -53,7 +64,22 @@ const DentistAppointments = () => {
                                     </td>
                                     <td style={styles.td}>{a.patient?.firstName} {a.patient?.lastName}</td>
                                     <td style={styles.td}>{a.treatment?.type}</td>
-                                    <td style={styles.td}>{a.attended ? "Yes" : "No"}</td>
+                                    <td style={styles.td}>
+                                        <button 
+                                            onClick={() => toggleAttended(a._id, a.attended)}
+                                            style={{
+                                                padding: "6px 12px", 
+                                                border: "none", 
+                                                borderRadius: "4px", 
+                                                backgroundColor: a.attended ? "#28a745" : "#6c757d", 
+                                                color: "white", 
+                                                cursor: "pointer",
+                                                fontWeight: "bold",
+                                                fontSize: "12px"
+                                            }}>
+                                            {a.attended ? "✓ Attended" : "Mark Attended"}
+                                        </button>
+                                    </td>
                                     <td style={styles.td}>{a.paymentStatus === 'paid' ? "Paid" : "Unpaid"}</td>
                                 </tr>
                             ))

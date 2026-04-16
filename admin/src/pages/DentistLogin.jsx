@@ -10,20 +10,20 @@ const DentistLogin = ({ setToken }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Placeholder endpoint. Will be properly wired when you request the backend feature.
-            const { data } = await axios.post("http://localhost:5000/api/dentist/login", {
+            const { data } = await axios.post("http://localhost:5000/api/dentists/login", {
                 email,
                 password,
             });
 
             if (data.message === "Dentist login successful") {
                 localStorage.setItem("dentistToken", "true");
+                localStorage.setItem("dentistId", data.dentistId);
                 setToken("true");
                 toast.success("Login Successful");
             }
         } catch (error) {
             if (error.response) {
-                toast.error("Waiting for backend route!");
+                toast.error(error.response.data.message || "Invalid credentials");
             } else {
                 toast.error("Login failed. Please try again.");
             }
