@@ -222,3 +222,34 @@ exports.deleteDentist = async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 }
+
+// --------------------------LOGIN DENTIST------------------------------
+exports.loginDentist = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password required" });
+        }
+
+        const dentist = await Dentist.findOne({ email });
+        if (!dentist) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        const match = await bcrypt.compare(password, dentist.password);
+        if (!match) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        return res.status(200).json({
+            message: "Dentist login successful",
+            dentistId: dentist._id,
+            firstName: dentist.firstName,
+            lastName: dentist.lastName,
+            email: dentist.email,
+        });
+    } catch (error) {
+        console.error("Login error:", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+};

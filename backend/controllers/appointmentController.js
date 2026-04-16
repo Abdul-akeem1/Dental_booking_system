@@ -25,7 +25,7 @@ exports.createAppointment = async (req, res) => {
         //prevent double booking
         const existingAppointment = await Appointment.findOne({ dentist, date, time });
         if (existingAppointment) {
-            return res.status(400).json({ message: "This time slot is already booked"});
+            return res.status(400).json({ message: "This time slot is already booked" });
         }
 
         const appointment = await Appointment.create({
@@ -66,7 +66,8 @@ exports.createAppointment = async (req, res) => {
 // ------------------------------GET ALL APPOINTMENTS---------------------------------
 exports.getAllAppointments = async (req, res) => {
     try {
-        const appointments = await Appointment.find({})
+        const filter = req.query.dentistId ? { dentist: req.query.dentistId } : {};
+        const appointments = await Appointment.find(filter)
             .populate("dentist", "firstName lastName")
             .populate("treatment", "type price")
             .populate("patient", "firstName lastName");
@@ -101,7 +102,7 @@ exports.updateAppointment = async (req, res) => {
         const existingAppt = await Appointment.findById(id);
         if (!existingAppt) return res.status(404).json({ message: "Not found" });
 
-        
+
         const allowedFields = ["date", "time", "dentist", "treatment", "patient", "attended", "paymentStatus", "discount"];
         const updates = {};
         for (const key of allowedFields) {
@@ -117,18 +118,18 @@ exports.updateAppointment = async (req, res) => {
                 return res.status(400).json({ message: "Appointment date must be today or in the future" });
             }
         }
-       
+
         // Prevent double booking for the same dentist at the same date and time
         if (updates.date || updates.time || updates.dentist) {
             const doubleBooking = await Appointment.findOne({
                 dentist: updates.dentist || existingAppt.dentist,
                 date: updates.date || existingAppt.date,
                 time: updates.time || existingAppt.time,
-                _id: { $ne: id } 
+                _id: { $ne: id }
             });
 
             if (doubleBooking) {
-                return res.status(400).json({ message: "This time slot is already booked"})
+                return res.status(400).json({ message: "This time slot is already booked" })
             }
         }
 
