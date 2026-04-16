@@ -184,6 +184,7 @@ const Dentists = () => {
                             <label>DOB</label>
                             <input 
                                 style={styles.input} 
+                                required
                                 max={today}
                                 type="date" name="DOB" 
                                 value={formData.DOB} 
@@ -198,12 +199,10 @@ const Dentists = () => {
                             <label>Email</label>
                             <input style={styles.input} type="email" required name="email" value={formData.email} onChange={handleInputChange} />
                         </div>
-                        {formMode === "add" && (
-                            <div style={styles.inputGroup}>
-                                <label>Password</label>
-                                <input style={styles.input} type="password" required name="password" value={formData.password} onChange={handleInputChange} />
-                            </div>
-                        )}
+                        <div style={styles.inputGroup}>
+                            <label>Password</label>
+                            <input style={styles.input} type="password" required name="password" value={formData.password} onChange={handleInputChange} />
+                        </div>
                     </div>
                     <div style={{ marginTop: "20px" }}>
                         <button style={{ ...styles.btn, marginRight: "10px" }} type="submit">Submit</button>
