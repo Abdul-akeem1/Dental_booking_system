@@ -134,6 +134,10 @@ exports.updateDentist = async (req, res) => {
             if (age < 18) {
                 return res.status(400).json({ message: "Dentist must be at least 18 years old." });
             }
+  
+            if (age > 120) {
+                return res.status(400).json({ message: "Invalid date of birth" });
+            }
         }
 
         if (updates.password) {
