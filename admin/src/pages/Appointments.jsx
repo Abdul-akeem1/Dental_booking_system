@@ -17,6 +17,7 @@ const Appointments = () => {
     const [treatments, setTreatments] = useState([]);
     const [showBillModal, setShowBillModal] = useState(false);
     const [discount, setDiscount] = useState(0);
+    const [rowsToShow, setRowsToShow] = useState(10);
 
     const [formData, setFormData] = useState({
         patient: "",
@@ -194,6 +195,20 @@ const Appointments = () => {
 
     const today = new Date().toISOString().split("T")[0]; //for min in html (so it disables days before today)
 
+    // Compute exactly which appointments to display on the screen
+    const displayedAppointments = (() => {
+        const now = Date.now();
+        // Sort by how close the appointment date is to RIGHT NOW (present)
+        const sorted = [...appointments].sort((a, b) => {
+            const dateA = a.date ? new Date(a.date).getTime() : 0;
+            const dateB = b.date ? new Date(b.date).getTime() : 0;
+            return Math.abs(dateA - now) - Math.abs(dateB - now);
+        });
+        
+        // Slice the array based on the requested limit
+        return rowsToShow === "All" ? sorted : sorted.slice(0, rowsToShow);
+    })();
+
     return (
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Appointments Management</h2>
@@ -213,7 +228,7 @@ const Appointments = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {appointments.map(a => (
+                            {displayedAppointments.map(a => (
                                 <tr
                                     key={a._id}
                                     onClick={() => handleSelectRow(a)}
@@ -233,11 +248,27 @@ const Appointments = () => {
                 </div>
             )}
 
-            <div style={styles.btnContainer}>
+            <div style={{ ...styles.btnContainer, alignItems: "center" }}>
                 <button style={styles.btn} onClick={openAddForm}>Add Appointment</button>
                 <button style={styles.btn} onClick={openUpdateForm}>Update Selected</button>
                 <button style={styles.btn} onClick={openBillModal}>Generate Bill</button>
                 <button style={{ ...styles.btn, ...styles.btnDelete }} onClick={handleDelete}>Delete Selected</button>
+
+                {/* The Dropdown Filter */}
+                <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <label style={{ fontWeight: "bold", color: "#555" }}>Show Rows:</label>
+                    <select 
+                        style={styles.select} 
+                        value={rowsToShow} 
+                        onChange={(e) => setRowsToShow(e.target.value === "All" ? "All" : Number(e.target.value))}
+                    >
+                        <option value={10}>10 (Default)</option>
+                        <option value={15}>15</option>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                        <option value="All">All</option>
+                    </select>
+                </div>
             </div>
 
             {showForm && (
