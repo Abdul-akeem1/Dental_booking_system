@@ -224,7 +224,7 @@ const Appointments = () => {
                                     <td style={styles.td}>{a.patient?.firstName} {a.patient?.lastName}</td>
                                     <td style={styles.td}>{a.dentist?.firstName} {a.dentist?.lastName}</td>
                                     <td style={styles.td}>{a.treatment?.type}</td>
-                                    <td style={styles.td}>{a.paymentStatus === 'paid' ? "paid" : "unpaid"}</td>
+                                    <td style={styles.td}>{a.paymentStatus === 'paid' ? "paid" : "no show"}</td>
                                     <td style={styles.td}>{a.attended ? "Yes" : "No"}</td>
                                 </tr>
                             ))}
@@ -265,7 +265,8 @@ const Appointments = () => {
                             </select>
                         </div>
 
-                        <div style={styles.inputGroup}>
+                        {/* removed treatment */}
+                        {/* <div style={styles.inputGroup}>
                             <label>Treatment</label>
                             <select style={styles.select} required name="treatment" value={formData.treatment} onChange={handleInputChange}>
                                 <option value="">Select Treatment...</option>
@@ -273,7 +274,7 @@ const Appointments = () => {
                                     <option key={t._id} value={t._id}>{t.type}</option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
 
                         <div style={styles.inputGroup}>
                             <label>Date</label>
@@ -317,10 +318,11 @@ const Appointments = () => {
                             </select>
                         </div>
 
-                        <div style={{ ...styles.inputGroup, flexDirection: "row", alignItems: "center", gap: "10px", gridColumn: "span 2" }}>
+                        {/* removed attended */}
+                        {/* <div style={{ ...styles.inputGroup, flexDirection: "row", alignItems: "center", gap: "10px", gridColumn: "span 2" }}>
                             <label style={{ fontWeight: "bold" }}>Attended</label>
                             <input type="checkbox" name="attended" checked={formData.attended} onChange={handleInputChange} style={{ width: "20px", height: "20px", cursor: "pointer" }} />
-                        </div>
+                        </div> */}
 
                     </div>
                     <div style={{ marginTop: "20px" }}>
