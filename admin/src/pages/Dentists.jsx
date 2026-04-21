@@ -10,6 +10,7 @@ const Dentists = () => {
     const [selectedDentist, setSelectedDentist] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [formMode, setFormMode] = useState("add");
+    const [search, setSearch] = useState("");
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -107,6 +108,11 @@ const Dentists = () => {
         }
     };
 
+    const filteredDentist = dentists.filter(p => {
+        const fullName = `${p.firstName} ${p.lastName}`.toLowerCase();
+        return fullName.includes(search.toLowerCase());
+    })
+
     const styles = {
         container: { padding: "20px" },
         tableTitle: { marginBottom: "15px", color: "#333" },
@@ -129,6 +135,23 @@ const Dentists = () => {
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Dentists Management</h2>
 
+            {/* Dentist Search Barr */}
+            <div style={{ marginBottom: "15px" }}>
+                <input 
+                    type="text" 
+                    placeholder="Search dentist name..." 
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{
+                        padding: "8px",
+                        width: "650px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
+                />
+            </div>
+
+
             {loading ? <p>Loading dentists...</p> : (
                 <div style={{ overflowX: "auto" }}>
                     <table style={styles.table}>
@@ -141,7 +164,7 @@ const Dentists = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {dentists.map(d => (
+                            {filteredDentist.map(d => (
                                 <tr
                                     key={d._id}
                                     onClick={() => handleSelectRow(d)}

@@ -10,6 +10,7 @@ const Patients = () => {
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [formMode, setFormMode] = useState("add"); // "add" or "update"
+    const [search, setSearch] = useState("");
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -117,6 +118,11 @@ const Patients = () => {
         }
     };
 
+    const filteredPatients = patients.filter(p => {
+        const fullName = `${p.firstName} ${p.lastName}`.toLowerCase();
+        return fullName.includes(search.toLowerCase());
+    })
+
     const styles = {
         container: { padding: "20px" },
         tableTitle: { marginBottom: "15px", color: "#333" },
@@ -139,6 +145,22 @@ const Patients = () => {
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Patients Management</h2>
 
+            {/* Patients Search Bar */}
+            <div style={{ marginBottom: "15px" }}>
+                <input 
+                    type="text" 
+                    placeholder="Search patient name..." 
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{
+                        padding: "8px",
+                        width: "650px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
+                />
+            </div>
+
             {loading ? <p>Loading patients...</p> : (
                 <div style={{ overflowX: "auto" }}>
                     <table style={styles.table}>
@@ -157,7 +179,7 @@ const Patients = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {patients.map(p => (
+                            {filteredPatients.map(p => (
                                 <tr
                                     key={p._id}
                                     onClick={() => handleSelectRow(p)}
