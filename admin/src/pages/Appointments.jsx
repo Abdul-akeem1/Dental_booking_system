@@ -22,7 +22,6 @@ const Appointments = () => {
     const [formData, setFormData] = useState({
         patient: "",
         dentist: "",
-        treatment: "",
         date: "",
         time: "",
         attended: false
@@ -77,7 +76,7 @@ const Appointments = () => {
 
     const openAddForm = () => {
         setFormMode("add");
-        setFormData({ patient: "", dentist: "", treatment: "", date: "", time: "", attended: false });
+        setFormData({ patient: "", dentist: "", date: "", time: "", attended: false });
         setShowForm(true);
         setSelectedAppointment(null);
     };
@@ -88,10 +87,10 @@ const Appointments = () => {
         setFormData({
             patient: selectedAppointment.patient?._id || "",
             dentist: selectedAppointment.dentist?._id || "",
-            treatment: selectedAppointment.treatment?._id || "",
+            // treatment: selectedAppointment.treatment?._id || "",
             date: selectedAppointment.date || "",
             time: selectedAppointment.time || "",
-            attended: selectedAppointment.attended || false
+            attended: selectedAppointment.attended || false,
         });
         setShowForm(true);
     };

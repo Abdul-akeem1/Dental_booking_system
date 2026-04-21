@@ -8,9 +8,9 @@ const User = require("../models/User");
 // ------------------------------CREATE APPOINTMENT---------------------------------
 exports.createAppointment = async (req, res) => {
     try {
-        const { date, time, dentist, treatment, patient, attended } = req.body;
+        const { date, time, dentist, patient, attended } = req.body;
 
-        if (!date || !time || !dentist || !treatment || !patient) {
+        if (!date || !time || !dentist || !patient) {
             return res.status(400).json({ message: "Missing required fields" });
         }
 
@@ -18,6 +18,7 @@ exports.createAppointment = async (req, res) => {
         const appointmentDate = new Date(date);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+
         if (appointmentDate < today) {
             return res.status(400).json({ message: "Appointment date must be today or in the future" });
         }
@@ -28,10 +29,22 @@ exports.createAppointment = async (req, res) => {
             return res.status(400).json({ message: "This time slot is already booked" });
         }
 
-        const appointment = await Appointment.create({
-            date, time, dentist, treatment, patient, attended: Boolean(attended)
+        //get the default consultation treatment
+        const consultationTreatment = await Treatment.findOne({
+            type: "Consultation"
         });
 
+        if(!consultationTreatment) {
+            return res.status(400).json({
+                message: "Consultation treatment not found"
+            });
+        }
+
+
+        const appointment = await Appointment.create({
+            date, time, dentist, patient, treatment: consultationTreatment._id, attended: Boolean(attended)
+        });
+        
         /* // Populate patient, dentist, and treatment to send a comprehensive email
         const populatedAppointment = await Appointment.findById(appointment._id)
             .populate("patient", "firstName lastName email")
