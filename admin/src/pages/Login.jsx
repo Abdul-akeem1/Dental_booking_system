@@ -3,8 +3,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-// Environment variables in Vite start with VITE_
-// For now, we will hit the backend API directly.
 
 const Login = ({ setToken }) => {
     const [email, setEmail] = useState("");
@@ -35,7 +33,7 @@ const Login = ({ setToken }) => {
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#f4f4f4" }}>
             <form onSubmit={handleSubmit} style={{ padding: "2rem", backgroundColor: "white", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", width: "350px" }}>
-                <h2 style={{ marginBottom: "1.5rem", textAlign: "center", color: "#333" }}>Admin Login</h2>
+                <h2 style={{ marginBottom: "1.5rem", textAlign: "center", color: "#333" }}>Receptionist Login</h2>
                 <div style={{ marginBottom: "1rem" }}>
                     <label style={{ display: "block", marginBottom: "0.5rem", color: "#666" }}>Email</label>
                     <input

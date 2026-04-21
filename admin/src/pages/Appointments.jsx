@@ -16,6 +16,7 @@ const Appointments = () => {
     const [dentists, setDentists] = useState([]);
     const [treatments, setTreatments] = useState([]);
     const [showBillModal, setShowBillModal] = useState(false);
+    const [showAvailableModal, setShowAvailableModal] = useState(false);
     const [discount, setDiscount] = useState(0);
     const [rowsToShow, setRowsToShow] = useState(10);
 
@@ -209,6 +210,65 @@ const Appointments = () => {
         return rowsToShow === "All" ? sorted : sorted.slice(0, rowsToShow);
     })();
 
+    // Helper to calculate the next available slots per dentist
+    const getNextAvailableForDentists = () => {
+        const availablePerDentist = [];
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMin = now.getMinutes();
+
+        dentists.forEach(dentist => {
+            let found = false;
+            let currentDate = new Date();
+            
+            // Look ahead up to 14 days to find their earliest slot
+            for (let i = 0; i < 14 && !found; i++) {
+                const dateStr = currentDate.toISOString().split("T")[0];
+                const isToday = i === 0;
+
+                for (let j = 0; j < timeSlots.length; j++) {
+                    const time = timeSlots[j];
+                    
+                    // If it's today, filter out past time slots
+                    if (isToday) {
+                        const [h, m] = time.split(":").map(Number);
+                        if (h < currentHour || (h === currentHour && m <= currentMin)) {
+                            continue; // Skip this time slot
+                        }
+                    }
+
+                    // Check if this dentist is booked for this date and time
+                    const isBooked = appointments.some(a => 
+                        a.date?.substring(0, 10) === dateStr && 
+                        a.time === time && 
+                        a.dentist?._id === dentist._id
+                    );
+
+                    if (!isBooked) {
+                        availablePerDentist.push({
+                            dentist: dentist,
+                            date: dateStr,
+                            time: time
+                        });
+                        found = true;
+                        break;
+                    }
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            if (!found) {
+                availablePerDentist.push({
+                    dentist: dentist,
+                    date: null,
+                    time: null
+                });
+            }
+        });
+        
+        return availablePerDentist;
+    };
+
     return (
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Appointments Management</h2>
@@ -252,6 +312,7 @@ const Appointments = () => {
                 <button style={styles.btn} onClick={openAddForm}>Add Appointment</button>
                 <button style={styles.btn} onClick={openUpdateForm}>Update Selected</button>
                 <button style={styles.btn} onClick={openBillModal}>Generate Bill</button>
+                <button style={{ ...styles.btn, backgroundColor: "#28a745" }} onClick={() => setShowAvailableModal(true)}>Next Available</button>
                 <button style={{ ...styles.btn, ...styles.btnDelete }} onClick={handleDelete}>Delete Selected</button>
 
                 {/* The Dropdown Filter */}
@@ -476,10 +537,40 @@ const Appointments = () => {
                                 </button>
                             )}
                             {/* The Cancel Button */}
-                            <button style={{ ...styles.btn, backgroundColor: "#6c757d" }} onClick={() => setShowBillModal(false)}>cancel</button>
+                            <button style={{ ...styles.btn, backgroundColor: "#6c757d" }} onClick={() => setShowBillModal(false)}>Cancel</button>
                         </div>
 
 
+                    </div>
+                </div>
+            )}
+
+            {showAvailableModal && (
+                <div style={styles.modalOverlay}>
+                    <div style={{ ...styles.modalContent, width: "600px" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #eee', paddingBottom: '15px', marginBottom: '20px' }}>
+                            <h2 style={{ margin: 0, color: "var(--color-primary-dark)" }}>📅 Next Available Appointments</h2>
+                            <button style={{ ...styles.btn, backgroundColor: "#dc3545", padding: "5px 10px" }} onClick={() => setShowAvailableModal(false)}>X</button>
+                        </div>
+                        
+                        <div style={{ maxHeight: "400px", overflowY: "auto", padding: "10px" }}>
+                            {getNextAvailableForDentists().length > 0 ? (
+                                <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
+                                    {getNextAvailableForDentists().map((slot, idx) => (
+                                        <li key={idx} style={{ padding: "12px 0", borderBottom: "1px solid #eee", fontSize: "16px", color: "#333" }}>
+                                            {slot.dentist.firstName} {slot.dentist.lastName}, Next Available: 
+                                            {slot.date ? ` ${slot.date} ${slot.time}:00` : " No availability in next 14 days"}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p style={{ textAlign: "center", color: "#666" }}>No dentists found.</p>
+                            )}
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #eee', paddingTop: '15px', marginTop: '10px' }}>
+                            <button style={{ ...styles.btn, backgroundColor: "#6c757d" }} onClick={() => setShowAvailableModal(false)}>Close</button>
+                        </div>
                     </div>
                 </div>
             )}

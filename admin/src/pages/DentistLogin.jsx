@@ -59,7 +59,7 @@ const DentistLogin = ({ setToken }) => {
                 </button>
                 <div style={{ marginTop: "1.5rem", textAlign: "center", fontSize: "14px" }}>
                     <p style={{ color: "#666" }}>
-                        Switch to <Link to="/login" style={{ color: "#007bff", textDecoration: "underline", fontWeight: "bold" }}>Admin Login</Link>
+                        Switch to <Link to="/login" style={{ color: "#007bff", textDecoration: "underline", fontWeight: "bold" }}>Receptionist Login</Link>
                     </p>
                 </div>
             </form>
