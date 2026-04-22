@@ -42,9 +42,9 @@ const Navbar = () => {
           <a href="/#services" className="nav-link">
             Services
           </a>
-          <a href="/dentists" className="nav-link">
+          {/* <a href="/dentists" className="nav-link">
             Dentists
-          </a>
+          </a> */}
           <Link to="/about" className="nav-link">
             About Us
           </Link>
@@ -62,7 +62,7 @@ const Navbar = () => {
             <User size={18} className="icon-left" />
             Admin Panel
           </a>
-          {user ? (
+          {/* {user ? (
             <div className="user-dropdown-container">
               <button
                 className="user-icon-btn"
@@ -94,7 +94,7 @@ const Navbar = () => {
             <Link to="/login" className="nav-link login-link">
               Log in
             </Link>
-          )}
+          )} */}
         </div>
 
         {/* Mobile Menu Toggle */}

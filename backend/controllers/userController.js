@@ -53,11 +53,11 @@ exports.loginUser = async (req, res) => {
 // hash password, create user, and return user without password 
 exports.createUser = async (req, res) => {
     try {
-        const { firstName, lastName, DOB, phone, email, street, town, county, country, Eircode, password } = req.body;
+        const { firstName, lastName, DOB, phone, email, street, town, county, country, Eircode } = req.body;
 
         // 1) required fields
-        if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" });
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" });
         }
 
         const normalisedEmail = email.trim().toLowerCase();
@@ -67,9 +67,6 @@ exports.createUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "Email already in use" });
         }
-
-        // 3) hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
 
 
         //Validations
@@ -138,13 +135,10 @@ exports.createUser = async (req, res) => {
             town,
             county,
             country,
-            Eircode,
-            password: hashedPassword,
+            Eircode
         });
 
-        // 5) return without password
         const userResponse = user.toObject();
-        delete userResponse.password;
 
         return res.status(201).json({
             message: "User created successfully",
@@ -162,7 +156,6 @@ exports.createUser = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find({})
-            .select("-password")
             .sort({ createdAt: -1 })
             .lean();
 
@@ -200,7 +193,7 @@ exports.getUserById = async (req, res) => {
             return res.status(400).json({ message: "Invalid user id" });
         }
 
-        const user = await User.findById(id).select("-password").lean();
+        const user = await User.findById(id).lean();
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -243,7 +236,7 @@ exports.updateUser = async (req, res) => {
         }
 
         //prepare allowed fields
-        const allowedFields = ["firstName", "lastName", "DOB", "phone", "email", "street", "town", "county", "country", "Eircode", "password"];
+        const allowedFields = ["firstName", "lastName", "DOB", "phone", "email", "street", "town", "county", "country", "Eircode"];
         const updates = {};
 
         for (const key of allowedFields) {
@@ -267,10 +260,6 @@ exports.updateUser = async (req, res) => {
             }
         }
 
-        //password hashing
-        if (updates.password) {
-            updates.password = await bcrypt.hash(updates.password, 10);
-        }
 
         //phone validation
         if (updates.phone) {
@@ -329,7 +318,7 @@ exports.updateUser = async (req, res) => {
         const updatedUser = await User.findByIdAndUpdate(id, updates, {
             new: true,
             runValidators: true,
-        }).select("-password");
+        });
 
         return res.status(200).json({
             message: "User updated successfully",
