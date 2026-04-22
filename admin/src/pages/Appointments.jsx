@@ -148,6 +148,21 @@ const Appointments = () => {
         }
     };
 
+    const handleUnpaid = async () => {
+        try {
+            await axios.put(`${API_URL}/${selectedAppointment._id}`, {
+                paymentStatus: 'unpaid',
+                discount: 0
+            });
+
+            toast.success("Appointment marked as unpaid!");
+            setShowBillModal(false);
+            fetchAppointments(); 
+        } catch (error) {
+            toast.error("Failed to process status change");
+        }
+    };
+
     const styles = {
         container: { padding: "20px" },
         tableTitle: { marginBottom: "15px", color: "#333" },
@@ -282,7 +297,7 @@ const Appointments = () => {
                                 <th style={styles.th}>Patient</th>
                                 <th style={styles.th}>Dentist</th>
                                 <th style={styles.th}>Treatment</th>
-                                <th style={styles.th}>Payment Status</th>
+                                {/* <th style={styles.th}>Payment Status</th> */}
                                 <th style={styles.th}>Attended</th>
                             </tr>
                         </thead>
@@ -298,7 +313,7 @@ const Appointments = () => {
                                     <td style={styles.td}>{a.patient?.firstName} {a.patient?.lastName}</td>
                                     <td style={styles.td}>{a.dentist?.firstName} {a.dentist?.lastName}</td>
                                     <td style={styles.td}>{a.treatment?.type}</td>
-                                    <td style={styles.td}>{a.paymentStatus === 'paid' ? "paid" : "no show"}</td>
+                                    {/* <td style={styles.td}>{a.paymentStatus === 'paid' ? "paid" : "no show"}</td> */}
                                     <td style={styles.td}>{a.attended ? "Yes" : "No"}</td>
                                 </tr>
                             ))}
@@ -533,9 +548,13 @@ const Appointments = () => {
                                 Print Invoice
                             </button>
                             {/* made it so that it only shows the Mark as Paid button if the appointment is unpaid */}
-                            {selectedAppointment.paymentStatus !== 'paid' && (
+                            {selectedAppointment.paymentStatus !== 'paid' ? (
                                 <button style={{ ...styles.btn, backgroundColor: '#28a745' }} onClick={() => handlePayment()}>
                                     Mark as Paid
+                                </button>
+                            ) : (
+                                <button style={{ ...styles.btn, backgroundColor: '#dc3545' }} onClick={() => handleUnpaid()}>
+                                    Mark as Unpaid
                                 </button>
                             )}
                             {/* The Cancel Button */}

@@ -165,7 +165,7 @@ exports.getAllUsers = async (req, res) => {
         const usersWithOwed = users.map(user => {
             const userAppointments = appointments.filter(a => a.patient && a.patient.toString() === user._id.toString());
             const amountOwed = userAppointments.reduce((sum, appt) => {
-                if (appt.treatment && appt.treatment.price) {
+                if (appt.paymentStatus !== 'paid' && appt.treatment && appt.treatment.price) {
                     return sum + appt.treatment.price;
                 }
                 return sum;
@@ -202,7 +202,7 @@ exports.getUserById = async (req, res) => {
         const Appointment = require("../models/Appointment");
         const appointments = await Appointment.find({ patient: id }).populate("treatment", "price");
         const amountOwed = appointments.reduce((sum, appt) => {
-            if (appt.treatment && appt.treatment.price) {
+            if (appt.paymentStatus !== 'paid' && appt.treatment && appt.treatment.price) {
                 return sum + appt.treatment.price;
             }
             return sum;

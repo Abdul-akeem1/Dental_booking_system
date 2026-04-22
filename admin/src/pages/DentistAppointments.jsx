@@ -52,7 +52,7 @@ const DentistAppointments = () => {
                             <th style={styles.th}>Patient Name</th>
                             <th style={styles.th}>Treatment</th>
                             <th style={styles.th}>Attended</th>
-                            <th style={styles.th}>Payment Status</th>
+                            {/* <th style={styles.th}>Payment Status</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -80,12 +80,12 @@ const DentistAppointments = () => {
                                             {a.attended ? "✓ Attended" : "Mark Attended"}
                                         </button>
                                     </td>
-                                    <td style={styles.td}>{a.paymentStatus === 'paid' ? "Paid" : "Unpaid"}</td>
+                                    {/* <td style={styles.td}>{a.paymentStatus === 'paid' ? "Paid" : "Unpaid"}</td> */}
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>No appointments found.</td>
+                                <td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>No appointments found.</td>
                             </tr>
                         )}
                     </tbody>
