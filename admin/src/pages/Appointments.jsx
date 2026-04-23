@@ -19,6 +19,7 @@ const Appointments = () => {
     const [showAvailableModal, setShowAvailableModal] = useState(false);
     const [discount, setDiscount] = useState(0);
     const [rowsToShow, setRowsToShow] = useState(10);
+    const [search, setSearch] = useState("");
 
     const [formData, setFormData] = useState({
         patient: "",
@@ -212,9 +213,16 @@ const Appointments = () => {
 
     // Compute exactly which appointments to display on the screen
     const displayedAppointments = (() => {
+        const filtered = appointments.filter(a => {
+            const patientName = `${a.patient?.firstName || ''} ${a.patient?.lastName || ''}`.toLowerCase();
+            const dentistName = `${a.dentist?.firstName || ''} ${a.dentist?.lastName || ''}`.toLowerCase();
+            const searchLower = search.toLowerCase();
+            return patientName.includes(searchLower) || dentistName.includes(searchLower);
+        });
+
         const now = Date.now();
         // Sort by how close the appointment date is to RIGHT NOW (present)
-        const sorted = [...appointments].sort((a, b) => {
+        const sorted = filtered.sort((a, b) => {
             const dateA = a.date ? new Date(a.date).getTime() : 0;
             const dateB = b.date ? new Date(b.date).getTime() : 0;
             return Math.abs(dateA - now) - Math.abs(dateB - now);
@@ -286,6 +294,22 @@ const Appointments = () => {
     return (
         <div style={styles.container}>
             <h2 style={styles.tableTitle}>Appointments Management</h2>
+
+            {/* Appointment Search Bar */}
+            <div style={{ marginBottom: "15px" }}>
+                <input 
+                    type="text" 
+                    placeholder="Search dentist or patient name..." 
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{
+                        padding: "8px",
+                        width: "650px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
+                />
+            </div>
 
             {loading ? <p>Loading data...</p> : (
                 <div style={{ overflowX: "auto" }}>
