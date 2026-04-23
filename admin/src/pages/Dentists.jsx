@@ -160,6 +160,7 @@ const Dentists = () => {
                                 <th style={styles.th}>Name</th>
                                 <th style={styles.th}>Speciality</th>
                                 <th style={styles.th}>Email</th>
+                                <th style={styles.th}>DOB</th>
                                 <th style={styles.th}>Phone</th>
                             </tr>
                         </thead>
@@ -173,6 +174,7 @@ const Dentists = () => {
                                     <td style={styles.td}>{d.firstName} {d.lastName}</td>
                                     <td style={styles.td}>{d.speciality}</td>
                                     <td style={styles.td}>{d.email}</td>
+                                    <td style={styles.td}>{d.DOB ? new Date(d.DOB).toLocaleDateString() : "N/A"}</td>
                                     <td style={styles.td}>{d.phone}</td>
                                 </tr>
                             ))}
