@@ -5,36 +5,34 @@ import './Services.css';
 export const servicesData = [
     {
         icon: <Smile size={40} />,
-        title: 'General Dentist',
-        description: 'Routine check-ups, cleanings, and preventive care to keep your smile healthy and bright.'
+        title: 'Consultation',
+        description: 'Comprehensive examination to assess your oral health and discuss personalized treatment plans.'
     },
     {
         icon: <Star size={40} />,
-        title: 'Cosmetic Dentist',
-        description: 'Transform your smile with veneers, whitening, and bonding treatments tailored to you.'
+        title: 'Cleaning',
+        description: 'Professional plaque and tartar removal, followed by polishing for a brighter, healthier smile.'
     },
     {
         icon: <Activity size={40} />,
-        title: 'Emergency Care',
-        description: 'Immediate attention for dental emergencies. We are here when you need us most.'
+        title: 'Teeth Whitening',
+        description: 'Effective and safe professional teeth whitening to remove stains and dramatically brighten your teeth.'
     },
     {
         icon: <Clock size={40} />,
-        title: 'Orthodontics',
-        description: 'Straighten your teeth with modern solutions including clear aligners and traditional braces.'
+        title: 'Fillings',
+        description: 'Tooth-colored composite restorations to repair cavities, restore tooth function, and prevent further decay.'
     },
     {
         icon: <Brain size={40} />,
-        title: 'Periodontist',
-        description: 'Specializes in treating diseases of the gums and supporting bone structures.'
+        title: 'Root Canal',
+        description: 'Expert endodontic therapy designed to save an infected tooth and relieve severe toothache.'
     },
-
     {
         icon: <User size={40} />,
-        title: 'Prosthodontist',
-        description: 'Specializes in replacing missing teeth with restorations like dentures, bridges, and implants.'
+        title: 'Extraction',
+        description: 'Safe and virtually painless tooth removal procedures, including wisdom teeth extractions.'
     },
-
 ];
 
 const Services = () => {

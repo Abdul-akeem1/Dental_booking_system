@@ -135,7 +135,7 @@ const Schedule = () => {
         container: { padding: "20px" },
         tableTitle: { marginBottom: "15px", color: "#333" },
         table: { width: "100%", borderCollapse: "collapse", marginBottom: "20px" },
-        th: { backgroundColor: "#f4f4f4", padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" },
+        th: { backgroundColor: "#f4f4f4", padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd", position: "sticky", top: 0, zIndex: 1 },
         td: { padding: "10px", borderBottom: "1px solid #ddd" },
         trSelected: { backgroundColor: "#e2f0ff", cursor: "pointer" },
         tr: { cursor: "pointer" },
@@ -152,8 +152,8 @@ const Schedule = () => {
             <h2 style={styles.tableTitle}>Dentists Schedule</h2>
 
             {loading ? <p>Loading data...</p> : (
-                <div style={{ overflowX: "auto" }}>
-                    <table style={styles.table}>
+                <div style={{ overflowX: "auto", overflowY: "auto", maxHeight: "500px", border: "1px solid #ddd", borderRadius: "5px", marginBottom: "20px" }}>
+                    <table style={{ ...styles.table, marginBottom: 0 }}>
                         <thead>
                             <tr>
                                 <th style={styles.th}>Dentist</th>
