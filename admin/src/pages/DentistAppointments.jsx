@@ -6,6 +6,7 @@ const API_URL = "http://localhost:5000/api/appointments";
 
 const DentistAppointments = () => {
     const [appointments, setAppointments] = useState([]);
+    const [treatments, setTreatments] = useState([]);
     const dentistId = localStorage.getItem("dentistId");
 
     const fetchAppointments = async () => {
@@ -15,6 +16,15 @@ const DentistAppointments = () => {
             setAppointments(res.data.appointments || []);
         } catch (error) {
             toast.error("Failed to load appointments");
+        }
+    };
+
+    const fetchTreatments = async () => {
+        try {
+            const res = await axios.get("http://localhost:5000/api/treatments");
+            setTreatments(res.data.treatments || []);
+        } catch (error) {
+            toast.error("Failed to load treatments");
         }
     };
 
@@ -29,8 +39,19 @@ const DentistAppointments = () => {
         }
     };
 
+    const updateTreatment = async (id, treatmentId) => {
+        try {
+            await axios.put(`${API_URL}/${id}`, { treatment: treatmentId });
+            toast.success("Treatment updated successfully");
+            fetchAppointments(); // Refresh table
+        } catch (error) {
+            toast.error("Failed to update treatment");
+        }
+    };
+
     useEffect(() => {
         fetchAppointments();
+        fetchTreatments();
     }, []);
 
     const styles = {
@@ -63,7 +84,20 @@ const DentistAppointments = () => {
                                         {new Date(a.date).toLocaleDateString()} @ {a.time}
                                     </td>
                                     <td style={styles.td}>{a.patient?.firstName} {a.patient?.lastName}</td>
-                                    <td style={styles.td}>{a.treatment?.type}</td>
+                                    <td style={styles.td}>
+                                        <select
+                                            value={a.treatment?._id || ""}
+                                            onChange={(e) => updateTreatment(a._id, e.target.value)}
+                                            style={{ padding: "6px", borderRadius: "4px", border: "1px solid #ccc" }}
+                                        >
+                                            <option value="">Select Treatment...</option>
+                                            {treatments.map((t) => (
+                                                <option key={t._id} value={t._id}>
+                                                    {t.type}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </td>
                                     <td style={styles.td}>
                                         <button 
                                             onClick={() => toggleAttended(a._id, a.attended)}
