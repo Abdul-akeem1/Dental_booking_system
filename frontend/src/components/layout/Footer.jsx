@@ -52,9 +52,10 @@ const Footer = () => {
                 <div className="footer-col">
                     <h4>Opening Hours</h4>
                     <ul className="hours-list">
-                        <li><span>Mon - Fri:</span> <span>9:00 AM - 6:00 PM</span></li>
+                        {/* <li><span>Mon - Fri:</span> <span>9:00 AM - 6:00 PM</span></li>
                         <li><span>Saturday:</span> <span>9:00 AM - 2:00 PM</span></li>
-                        <li><span>Sunday:</span> <span>Closed</span></li>
+                        <li><span>Sunday:</span> <span>Closed</span></li> */}
+                        <li><span>Everyday:</span> <span>9:00 AM - 4:30 PM</span></li>
                     </ul>
                 </div>
             </div>

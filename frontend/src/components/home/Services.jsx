@@ -1,35 +1,35 @@
 import React from 'react';
-import { Smile, Activity, Star, Clock, Brain, User } from 'lucide-react';
+import { ClipboardList, Sparkles, Sun, ShieldCheck, Activity, Stethoscope } from 'lucide-react';
 import './Services.css';
 
 export const servicesData = [
     {
-        icon: <Smile size={40} />,
+        icon: <ClipboardList size={40} />,
         title: 'Consultation',
         description: 'Comprehensive examination to assess your oral health and discuss personalized treatment plans.'
     },
     {
-        icon: <Star size={40} />,
+        icon: <Sparkles size={40} />,
         title: 'Cleaning',
         description: 'Professional plaque and tartar removal, followed by polishing for a brighter, healthier smile.'
     },
     {
-        icon: <Activity size={40} />,
+        icon: <Sun size={40} />,
         title: 'Teeth Whitening',
         description: 'Effective and safe professional teeth whitening to remove stains and dramatically brighten your teeth.'
     },
     {
-        icon: <Clock size={40} />,
+        icon: <ShieldCheck size={40} />,
         title: 'Fillings',
         description: 'Tooth-colored composite restorations to repair cavities, restore tooth function, and prevent further decay.'
     },
     {
-        icon: <Brain size={40} />,
+        icon: <Activity size={40} />,
         title: 'Root Canal',
         description: 'Expert endodontic therapy designed to save an infected tooth and relieve severe toothache.'
     },
     {
-        icon: <User size={40} />,
+        icon: <Stethoscope size={40} />,
         title: 'Extraction',
         description: 'Safe and virtually painless tooth removal procedures, including wisdom teeth extractions.'
     },

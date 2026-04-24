@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Clock, User, Activity } from 'lucide-react';
 
 const API_URL = "http://localhost:5000/api/appointments";
 
 const DentistSchedule = () => {
-    const [groupedAppointments, setGroupedAppointments] = useState({});
+    const [allAppointments, setAllAppointments] = useState([]);
+    const [displayedAppointments, setDisplayedAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const dentistId = localStorage.getItem("dentistId");
+    
+    const [filterDate, setFilterDate] = useState("");
 
     const fetchSchedule = async () => {
         setLoading(true);
@@ -24,19 +26,8 @@ const DentistSchedule = () => {
                 return a.time.localeCompare(b.time); // e.g. "09:00" vs "14:30"
             });
 
-            // Group by date string
-            const grouped = {};
-            data.forEach(appt => {
-                const dateObj = new Date(appt.date);
-                // "Monday, April 14, 2026"
-                const formalDate = dateObj.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                if (!grouped[formalDate]) {
-                    grouped[formalDate] = [];
-                }
-                grouped[formalDate].push(appt);
-            });
-
-            setGroupedAppointments(grouped);
+            setAllAppointments(data);
+            setDisplayedAppointments(data);
         } catch (error) {
             toast.error("Failed to load schedule");
         }
@@ -47,64 +38,100 @@ const DentistSchedule = () => {
         fetchSchedule();
     }, []);
 
+    const handleApplyFilter = () => {
+        if (!filterDate) {
+            setDisplayedAppointments(allAppointments);
+            return;
+        }
+        const filtered = allAppointments.filter(appt => {
+            if (!appt.date) return false;
+            return appt.date.substring(0, 10) === filterDate;
+        });
+        setDisplayedAppointments(filtered);
+    };
+
+    const handleClearFilter = () => {
+        setFilterDate("");
+        setDisplayedAppointments(allAppointments);
+    };
+
     const styles = {
-        container: { padding: '30px', maxWidth: '800px', margin: '0 auto' },
-        header: { color: "#28a745", marginBottom: '20px', fontSize: '2rem', borderBottom: '2px solid #e9ecef', paddingBottom: '10px' },
-        dateHeader: { backgroundColor: '#f8f9fa', padding: '10px 15px', borderRadius: '5px', color: '#495057', fontSize: '1.2rem', marginTop: '30px', borderLeft: '4px solid #28a745' },
-        card: { backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', padding: '20px', marginTop: '15px', display: 'flex', border: '1px solid #eee', transition: 'transform 0.2s ease' },
-        timeArea: { minWidth: '100px', borderRight: '2px solid #e9ecef', paddingRight: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' },
-        timeText: { fontSize: '1.5rem', fontWeight: 'bold', color: '#28a745' },
-        detailsArea: { paddingLeft: '20px', flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' },
-        infoRow: { display: 'flex', alignItems: 'center', gap: '8px', color: '#555', fontSize: '1rem' },
-        badge: { padding: '4px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold', display: 'inline-block' },
-        attendedBadge: { backgroundColor: '#d4edda', color: '#155724' },
-        pendingBadge: { backgroundColor: '#fff3cd', color: '#856404' }
+        container: { padding: "20px" },
+        tableTitle: { marginBottom: "15px", color: "#333" },
+        table: { width: "100%", borderCollapse: "collapse", marginBottom: "20px" },
+        th: { backgroundColor: "#f4f4f4", padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd", position: "sticky", top: 0, zIndex: 1 },
+        td: { padding: "10px", borderBottom: "1px solid #ddd" },
+        btnContainer: { display: "flex", gap: "10px", marginBottom: "20px" },
+        btn: { padding: "8px 16px", border: "none", borderRadius: "4px", backgroundColor: "#007bff", color: "white", cursor: "pointer" },
+        input: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" },
+        filterArea: { display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px", flexWrap: "wrap", marginTop: "20px" }
     };
 
     return (
         <div style={styles.container}>
-            <h2 style={styles.header}>My Weekly Schedule</h2>
+            <h2 style={styles.tableTitle}>My Schedule</h2>
             
+            
+
             {loading ? (
-                <p style={{ color: '#666', fontSize: '1.2rem' }}>Loading timeline...</p>
-            ) : Object.keys(groupedAppointments).length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f8f9fa', borderRadius: '8px', marginTop: '20px' }}>
-                    <h3 style={{ color: '#6c757d' }}>Your schedule is completely clear!</h3>
-                    <p style={{ color: '#adb5bd' }}>No upcoming appointments booked.</p>
-                </div>
+                <p>Loading schedule...</p>
             ) : (
-                Object.keys(groupedAppointments).map(dateKey => (
-                    <div key={dateKey}>
-                        <h3 style={styles.dateHeader}>{dateKey}</h3>
-                        
-                        {groupedAppointments[dateKey].map(appt => (
-                            <div key={appt._id} style={styles.card}>
-                                <div style={styles.timeArea}>
-                                    <Clock size={20} color="#6c757d" style={{ marginBottom: '5px' }} />
-                                    <span style={styles.timeText}>{appt.time}</span>
-                                </div>
-                                <div style={styles.detailsArea}>
-                                    <div style={styles.infoRow}>
-                                        <User size={18} color="#007bff" />
-                                        <span style={{ fontWeight: '600', color: '#333', fontSize: '1.1rem' }}>
-                                            {appt.patient?.firstName} {appt.patient?.lastName}
-                                        </span>
-                                    </div>
-                                    <div style={styles.infoRow}>
-                                        <Activity size={18} color="#dc3545" />
-                                        <span>{appt.treatment?.type}</span>
-                                    </div>
-                                    <div style={{ marginTop: '5px' }}>
-                                        <span style={{ ...styles.badge, ...(appt.attended ? styles.attendedBadge : styles.pendingBadge) }}>
-                                            {appt.attended ? "✓ Attended" : "Pending Arrival"}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ))
+                <div style={{ overflowX: "auto", overflowY: "auto", maxHeight: "500px", border: "1px solid #ddd", borderRadius: "5px" }}>
+                    <table style={{ ...styles.table, marginBottom: 0 }}>
+                        <thead>
+                            <tr>
+                                <th style={styles.th}>Patient</th>
+                                <th style={styles.th}>Treatment</th>
+                                <th style={styles.th}>Date</th>
+                                <th style={styles.th}>Time</th>
+                                <th style={styles.th}>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {displayedAppointments.length > 0 ? (
+                                displayedAppointments.map(appt => (
+                                    <tr key={appt._id} style={{ transition: 'background-color 0.2s', borderBottom: '1px solid #eee' }} onMouseOver={e => e.currentTarget.style.backgroundColor = '#f8f9fa'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'transparent'}>
+                                        <td style={styles.td}>{appt.patient?.firstName} {appt.patient?.lastName}</td>
+                                        <td style={styles.td}>{appt.treatment?.type}</td>
+                                        <td style={styles.td}>{appt.date ? new Date(appt.date).toLocaleDateString() : 'N/A'}</td>
+                                        <td style={styles.td}>{appt.time}</td>
+                                        <td style={styles.td}>
+                                            <span style={{
+                                                padding: '4px 8px', 
+                                                borderRadius: '12px', 
+                                                fontSize: '12px', 
+                                                fontWeight: 'bold', 
+                                                display: 'inline-block',
+                                                backgroundColor: appt.attended ? '#d4edda' : '#fff3cd',
+                                                color: appt.attended ? '#155724' : '#856404'
+                                            }}>
+                                                {appt.attended ? "✓ Attended" : "Pending Arrival"}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5" style={{ ...styles.td, textAlign: 'center', color: '#666', padding: '30px' }}>
+                                        No appointments found for this selection.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             )}
+                <div style={styles.filterArea}>
+                <label style={{ fontSize: "14px", fontWeight: "bold", color: "#555" }}>Select Date:</label>
+                <input 
+                    type="date" 
+                    value={filterDate} 
+                    onChange={(e) => setFilterDate(e.target.value)} 
+                    style={styles.input}
+                />
+                <button style={styles.btn} onClick={handleApplyFilter}>Apply Filter</button>
+                <button style={{ ...styles.btn, backgroundColor: "#6c757d" }} onClick={handleClearFilter}>Clear Filters</button>
+            </div>
         </div>
     );
 };
